@@ -1,5 +1,6 @@
 const { Task } = require('../../models');
 const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 
 class TaskRepository {
     constructor() {
@@ -15,9 +16,15 @@ class TaskRepository {
             throw new InvariantError('ID not provided');
         }
 
-        return await this._model.findOne({
+        const task = await this._model.findOne({
             where: { id: id },
         })
+
+        if(!task) {
+            throw new NotFoundError('Task not found');
+        }
+
+        return task;
     }
 
     async addTask(params) {
@@ -37,6 +44,11 @@ class TaskRepository {
             throw new InvariantError('ID not Provided');
         }
 
+        const task = await this._model.findOne({ where: { id: id }});
+        if(!task) {
+            throw new NotFoundError('Task not found');
+        }
+
         const data = {
             task: body.task,
             status: body.status
@@ -52,6 +64,11 @@ class TaskRepository {
     async deleteTask({ id }) {
         if(id === '') {
             throw new InvariantError('ID not Provided');
+        }
+
+        const task = await this._model.findOne({ where: { id: id }});
+        if(!task) {
+            throw new NotFoundError('Task not found');
         }
         
         try {
