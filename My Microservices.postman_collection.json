@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "fbb1bd9b-0ac4-4445-8ace-3e09c5952618",
+		"name": "My Microservices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API Gateway",
+			"item": [
+				{
+					"name": "Task",
+					"item": [
+						{
+							"name": "All Task",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Task By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/2",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Task",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "task",
+											"value": "new task",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Task",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"task\": \"new update test\",\n    \"status\": \"1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/10",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/3",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "Task",
+					"item": [
+						{
+							"name": "All Task",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Task By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/1",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Task",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "task",
+											"value": "new task",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Task",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"task\": \"new update test\",\n    \"status\": \"1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/10",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/3",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
