@@ -16,6 +16,7 @@ const httpStatus = require('http-status');
 // setiap membuat file router baru, silahkan panggil disini
 const taskRouterV1 = require('./routes/v1/task');
 const authRouterV1 = require('./routes/v1/authentication');
+const BadRequestError = require('./exceptions/BadRequestError');
 
 const app = express();
 
@@ -110,6 +111,8 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
+    console.log(err.response.data)
+    console.log(err instanceof BadRequestError)
     res.locals.message = err.message;
     res.locals.error = req.app.get('env').trim() == 'development' ? err : {};
 
@@ -145,12 +148,18 @@ app.use(function (err, req, res, next) {
     });
     
     // render the error page
-    // IF Service Down / Unavailable
-    if(err.code == 'ECONNREFUSED') {
+    if(err.code == 'ECONNREFUSED') {  // IF Service Down / Unavailable
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
             code: httpStatus.INTERNAL_SERVER_ERROR,
             status: 'ERROR',
             message: err.message || 'Service Unavailable',
+            data: null
+        });
+    } else if(err.response.data.code) {
+        res.status(err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR).json({
+            code: err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR,
+            status: 'ERROR',
+            message: err.response.data.message || httpStatus[`${httpStatus.INTERNAL_SERVER_ERROR}_NAME`],
             data: null
         });
     } else {
@@ -161,8 +170,6 @@ app.use(function (err, req, res, next) {
             data: null
         });
     }
-
-    
 });
 
 app.listen(process.env.PORT, () => {
