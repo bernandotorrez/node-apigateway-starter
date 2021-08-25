@@ -29,7 +29,6 @@ app.use(bearerToken());
 app.use(cors())
 
 // wajib saat naik ke production
-console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV == 'production') {
     app.use(helmet());
 }
