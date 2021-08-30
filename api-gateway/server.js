@@ -69,6 +69,8 @@ process.on('uncaughtException', (ex) => {
         timestamp: globalFunction.log_time()
     });
 
+    console.log(ex)
+
     process.exit(1)
 })
 
@@ -95,6 +97,8 @@ process.on('unhandledRejection', (ex) => {
         message: `unhandledRejection : ${ex}`,
         timestamp: globalFunction.log_time()
     });
+
+    console.log(ex)
 
     process.exit(1)
 })
