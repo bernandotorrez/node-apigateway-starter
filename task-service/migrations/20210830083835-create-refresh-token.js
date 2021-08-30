@@ -1,24 +1,22 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('tasks', {
+    await queryInterface.createTable('refresh_tokens', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      task: {
-        type: Sequelize.STRING(200),
-        length: 100
+      token: {
+        type: Sequelize.STRING(100),
       },
-      status: {
-        type: Sequelize.ENUM('0', '1'),
-        defaultValue: '0'
+      username: {
+        type: Sequelize.STRING(100)
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updated_at: {
         allowNull: false,
@@ -27,6 +25,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('tasks');
+    await queryInterface.dropTable('refresh_tokens');
   }
 };
