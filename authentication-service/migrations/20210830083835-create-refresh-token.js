@@ -9,10 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       token: {
-        type: Sequelize.STRING(100),
-      },
-      username: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.TEXT,
       },
       created_at: {
         allowNull: false,

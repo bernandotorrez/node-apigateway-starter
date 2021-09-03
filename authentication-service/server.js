@@ -14,7 +14,7 @@ const httpStatus = require('http-status');
 // const jwt = require('jsonwebtoken');
 
 // setiap membuat file router baru, silahkan panggil disini
-const taskRouterV1 = require('./routes/v1/task');
+const authRouterV1 = require('./routes/v1/authentication');
 
 const app = express();
 
@@ -38,7 +38,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 }
 
 // setiap ada penambahan Router, inisialisasi index nya disini
-app.use('/v1/task', taskRouterV1);
+app.use('/v1/auth', authRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {
