@@ -107,6 +107,8 @@ router.delete('/logout', async (req, res) => {
     await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
     await refreshTokenRepository.deleteRefreshToken({ token: refreshToken });
 
+    res.header('X-Auth-Token', '');
+    res.header('X-Auth-Refresh-Token', '');
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',

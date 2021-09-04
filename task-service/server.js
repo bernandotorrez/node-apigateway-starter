@@ -11,6 +11,9 @@ const cors = require('cors')
 const compression = require('compression');
 const httpStatus = require('http-status');
 
+// Middleware
+const authMiddleware = require('./middleware/auth');
+
 // const jwt = require('jsonwebtoken');
 
 // setiap membuat file router baru, silahkan panggil disini
@@ -38,7 +41,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 }
 
 // setiap ada penambahan Router, inisialisasi index nya disini
-app.use('/v1/task', taskRouterV1);
+app.use('/v1/task', authMiddleware, taskRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {
