@@ -4,11 +4,8 @@ const router = express.Router();
 
 // API Adapter
 const apiAdapter = require('../../utils/apiAdapter.js');
-const { URL_SERVICE_TASK } = process.env
-const api = apiAdapter(URL_SERVICE_TASK);
-
-const ServerError = require('../../exceptions/ServerError');
-const BadRequestError = require('../../exceptions/BadRequestError');
+const { URL_TASK_SERVICE } = process.env
+const api = apiAdapter(URL_TASK_SERVICE);
 
 router.get('/', async (req, res) => {
    const task = await api.get('/v1/task')
