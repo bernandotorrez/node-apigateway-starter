@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --forceExit"
   },
   "keywords": [
     "node",
@@ -36,7 +36,6 @@
     "express-winston": "^4.1.0",
     "helmet": "^4.6.0",
     "http-status": "^1.5.0",
-    "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
@@ -47,7 +46,10 @@
   },
   "devDependencies": {
     "babel-register": "^6.26.0",
+    "jest": "^27.1.0",
+    "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.12",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.6"
   }
 }
