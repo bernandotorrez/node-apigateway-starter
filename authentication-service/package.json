@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "node",
@@ -47,7 +47,9 @@
   },
   "devDependencies": {
     "babel-register": "^6.26.0",
+    "jest": "^27.1.0",
     "nodemon": "^2.0.12",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.6"
   }
 }
