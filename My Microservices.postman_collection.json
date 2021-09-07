@@ -15,7 +15,13 @@
 							"name": "All Task",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task",
 									"host": [
@@ -34,7 +40,13 @@
 							"name": "Get Task By Id",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/2",
 									"host": [
@@ -54,15 +66,20 @@
 							"name": "Add Task",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "urlencoded",
 									"urlencoded": [
 										{
 											"key": "task",
 											"value": "from gateway",
-											"type": "text",
-											"disabled": true
+											"type": "text"
 										}
 									]
 								},
@@ -84,7 +101,13 @@
 							"name": "Update Task",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"task\": \"new update test\",\n    \"status\": \"1\"\n}",
@@ -113,7 +136,13 @@
 							"name": "Delete Task",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/3",
 									"host": [
@@ -124,6 +153,183 @@
 										"v1",
 										"task",
 										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/register",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/login",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Auth-Refresh-Token",
+										"value": "{{REFRESH_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_AUTH_SERVICE}}/v1/auth/refresh-token",
+									"host": [
+										"{{URL_AUTH_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Refresh-Token",
+										"value": "{{REFRESH_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_AUTH_SERVICE}}/v1/auth/logout",
+									"host": [
+										"{{URL_AUTH_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"logout"
 									]
 								}
 							},
@@ -143,7 +349,13 @@
 							"name": "All Task",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "{{URL_TASK_SERVICE}}/v1/task",
 									"host": [
@@ -161,16 +373,22 @@
 							"name": "Get Task By Id",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/1",
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/15",
 									"host": [
 										"{{URL_TASK_SERVICE}}"
 									],
 									"path": [
 										"v1",
 										"task",
-										"1"
+										"15"
 									]
 								}
 							},
@@ -180,13 +398,19 @@
 							"name": "Add Task",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "urlencoded",
 									"urlencoded": [
 										{
 											"key": "task",
-											"value": "new task",
+											"value": "adasd",
 											"type": "text"
 										}
 									]
@@ -208,7 +432,13 @@
 							"name": "Update Task",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"task\": \"new update test\",\n    \"status\": \"1\"\n}",
@@ -219,14 +449,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/10",
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/21",
 									"host": [
 										"{{URL_TASK_SERVICE}}"
 									],
 									"path": [
 										"v1",
 										"task",
-										"10"
+										"21"
 									]
 								}
 							},
@@ -236,16 +466,22 @@
 							"name": "Delete Task",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/5",
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/1",
 									"host": [
 										"{{URL_TASK_SERVICE}}"
 									],
 									"path": [
 										"v1",
 										"task",
-										"5"
+										"1"
 									]
 								}
 							},
@@ -286,6 +522,34 @@
 						},
 						{
 							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -314,12 +578,29 @@
 						},
 						{
 							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "PUT",
 								"header": [
 									{
 										"key": "X-Auth-Refresh-Token",
-										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiYmVybmFuZG8iLCJsZXZlbCI6IiJ9LCJpYXQiOjE2MzA2NjEwMjAsImV4cCI6MTYzMDY2MTkyMH0.sKGrcoDF3EYgB-CMJar1biMnPgYSMNloigHACGLU-38",
+										"value": "{{REFRESH_TOKEN}}",
 										"type": "text"
 									}
 								],
@@ -338,13 +619,32 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [
 									{
 										"key": "X-Auth-Refresh-Token",
-										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiYmVybmFuZG8iLCJsZXZlbCI6IiJ9LCJpYXQiOjE2MzA2NjEwMjAsImV4cCI6MTYzMDY2MTkyMH0.sKGrcoDF3EYgB-CMJar1biMnPgYSMNloigHACGLU-38",
+										"value": "{{REFRESH_TOKEN}}",
 										"type": "text"
 									}
 								],

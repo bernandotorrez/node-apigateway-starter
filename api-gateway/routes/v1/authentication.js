@@ -4,7 +4,6 @@ const router = express.Router();
 
 // API Adapter
 const apiAdapter = require('../../utils/apiAdapter.js');
-const { route } = require('./task.js');
 const { URL_AUTH_SERVICE } = process.env
 const api = apiAdapter(URL_AUTH_SERVICE);
 
