@@ -1,10 +1,12 @@
 {
-  "name": "express_api",
+  "name": "api_gateway",
   "version": "1.0.0",
-  "description": "REST API with Express JS",
+  "description": "Microservice - API Gateway",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
+    "pm2:dev": "SET NODE_ENV=development&& pm2 start server.js -i 1 --name api-gateway",
+    "pm2:prod": "SET NODE_ENV=production&& pm2 start server.js -i 1 --name api-gateway",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

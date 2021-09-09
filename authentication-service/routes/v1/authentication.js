@@ -18,7 +18,6 @@ const cacheRepository = new CacheRepository();
 
 // Validator
 const authenticationValidator = require('../../validators/authenticationValidator');
-const { ref } = require('@hapi/joi');
 
 router.post('/register', async (req, res) => {
     authenticationValidator.RegisterValidator(req.body);
@@ -113,7 +112,7 @@ router.delete('/logout', async (req, res) => {
         code: httpStatus.OK,
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: null
+        data: 'logged out'
     });
 })
 
