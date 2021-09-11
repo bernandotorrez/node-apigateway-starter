@@ -7,7 +7,10 @@ const apiAdapter = require('../../utils/apiAdapter.js');
 const { URL_TASK_SERVICE } = process.env
 const api = apiAdapter(URL_TASK_SERVICE);
 
-router.get('/', async (req, res) => {
+// middleware
+const auth = require('../../middleware/auth');
+
+router.get('/', auth, async (req, res) => {
    const accessToken = req.header('X-Auth-Token')
    const headers = {
       headers: {
@@ -19,7 +22,7 @@ router.get('/', async (req, res) => {
    return res.json(task.data)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
    const accessToken = req.header('X-Auth-Token')
    const headers = {
       headers: {

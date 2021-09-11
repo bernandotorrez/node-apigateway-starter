@@ -150,6 +150,7 @@ app.use(function (err, req, res, next) {
     });
     
     // render the error page
+    console.log(err.response)
     if(err.code == 'ECONNREFUSED') {  // IF Service Down / Unavailable
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
             code: httpStatus.INTERNAL_SERVER_ERROR,
@@ -157,7 +158,7 @@ app.use(function (err, req, res, next) {
             message: err.message || 'Service Unavailable',
             data: null
         });
-    } else if(err.response.data.code) {
+    } else if(err.response.data) {
         res.status(err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR).json({
             code: err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR,
             status: 'ERROR',
