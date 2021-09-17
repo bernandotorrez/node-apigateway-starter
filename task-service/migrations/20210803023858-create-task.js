@@ -9,8 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       task: {
-        type: Sequelize.STRING(200),
-        length: 100
+        type: Sequelize.STRING(200)
       },
       status: {
         type: Sequelize.ENUM('0', '1'),
