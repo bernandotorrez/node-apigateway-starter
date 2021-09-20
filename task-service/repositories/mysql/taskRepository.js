@@ -1,14 +1,24 @@
 const { Task } = require('../../models');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
+const { Op } = require('sequelize');
 
 class TaskRepository {
     constructor() {
         this._model = Task;
     }
 
-    async getTasks() {
-        return await this._model.findAll()
+    async getTasks({ task = ''}) {
+        if(task) {
+            return await this._model.findAll({ 
+                where: {
+                    task: { [Op.substring]: task }
+                }
+             });
+        } else {
+            return await this._model.findAll()
+        }
+        
     }
 
     async getTask({ id = '' }) {

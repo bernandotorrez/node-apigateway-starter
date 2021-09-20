@@ -22,8 +22,9 @@ const taskValidator = require('../../validators/taskValidator');
 // Error Handling should in Repository
 
 router.get('/', async (req, res) => {
+   const { task } = req.query;
    try {
-      const tasks = await cacheRepository.get('task:all');
+      const tasks = await cacheRepository.get(`task:all:wheretask:${task}`);
 
       res.status(httpStatus.OK).json({
          code: httpStatus.OK,
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
          data: JSON.parse(tasks)
       });
    } catch (err) {
-      const tasks = await taskRepository.getTasks();
+      const tasks = await taskRepository.getTasks({ task });
 
       await cacheRepository.set(`task:all`, JSON.stringify(tasks), 60);
 
