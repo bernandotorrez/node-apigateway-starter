@@ -36,7 +36,11 @@ router.post('/register', async (req, res) => {
         code: httpStatus.OK,
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: user
+        data: {
+            user: user.username,
+            level: user.level,
+            created_at: user.created_at
+        }
     });
 })
 

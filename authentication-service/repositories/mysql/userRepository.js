@@ -37,7 +37,8 @@ class UserRepository {
 
     async register({
         username,
-        password
+        password,
+        level = 'User'
     }) {
         const user = await this._model.findOne({ where: { username: username }})
         if(user) {
@@ -49,7 +50,7 @@ class UserRepository {
             const user = await this._model.create({
                 username: username,
                 password: hashedPassword,
-                level: 'user'
+                level: level
             })
 
             return user;

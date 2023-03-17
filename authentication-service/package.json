@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "pm2:dev": "SET NODE_ENV=development&& pm2 start server.js -i 1 --name auth-service",
-    "pm2:prod": "SET NODE_ENV=production&& pm2 start server.js -i 1 --name auth-service",
+    "pm2:dev": "cross-env NODE_ENV=development&& pm2 start server.js -i 2 --name auth-service",
+    "pm2:prod": "cross-env NODE_ENV=production&& pm2 start server.js -i 2 --name auth-service",
     "test": "jest --forceExit"
   },
   "keywords": [
@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "babel-register": "^6.26.0",
+    "cross-env": "^7.0.3",
     "jest": "^27.1.0",
     "nodemon": "^2.0.12",
     "sequelize-cli": "^6.2.0",

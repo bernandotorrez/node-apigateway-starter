@@ -11,8 +11,8 @@ module.exports = {
         type: Sequelize.STRING(100)
       },
       level: {
-        type: Sequelize.ENUM('Adm', 'Usr'),
-        defaultValue: 'Usr'
+        type: Sequelize.ENUM('Admin', 'User'),
+        defaultValue: 'User'
       },
       created_at: {
         allowNull: false,

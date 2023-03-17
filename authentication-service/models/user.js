@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     password: DataTypes.STRING,
-    level: DataTypes.STRING
+    level: DataTypes.ENUM('Admin', 'User')
   }, {
     sequelize,
     modelName: 'User',
@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     underscored: true,
+    scopes: {
+      withoutPassword: {
+        attributes: { exclude: ['password'] },
+      }
+    }    
   });
   return User;
 };

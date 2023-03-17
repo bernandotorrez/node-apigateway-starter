@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "pm2:dev": "SET NODE_ENV=development&& pm2 start server.js -i 1 --name api-gateway",
-    "pm2:prod": "SET NODE_ENV=production&& pm2 start server.js -i 1 --name api-gateway",
+    "pm2:dev": "cross-env NODE_ENV=development&& pm2 start server.js -i 2 --name api-gateway",
+    "pm2:prod": "cross-env NODE_ENV=production&& pm2 start server.js -i 2 --name api-gateway",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "babel-register": "^6.26.0",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.12"
   }
 }
