@@ -6,3 +6,5 @@
 {"level":"error","message":"ReferenceError: doc is not defined","httpStatus":"500","ip":"::ffff:127.0.0.1","url":"/v1/todos","method":"GET","timestamp":"13-12-2023 16:20:25"}
 {"level":"error","message":"TypeError: doc.data is not a function","httpStatus":"500","ip":"::ffff:127.0.0.1","url":"/v1/todos","method":"GET","timestamp":"13-12-2023 16:23:5"}
 {"level":"error","message":"TypeError: doc.data is not a function","httpStatus":"500","ip":"::ffff:127.0.0.1","url":"/v1/todos","method":"GET","timestamp":"13-12-2023 16:23:39"}
+{"level":"error","message":"TypeError: todoRepository.getTodos is not a function","httpStatus":"500","ip":"::ffff:127.0.0.1","url":"/v1/todos","method":"GET","timestamp":"13-12-2023 16:41:50"}
+{"level":"error","message":"ReferenceError: todoModel is not defined","httpStatus":"500","ip":"::ffff:127.0.0.1","url":"/v1/todos","method":"GET","timestamp":"13-12-2023 16:44:41"}

@@ -7,33 +7,20 @@ const httpStatus = require('http-status');
 // const tokenManager = require('../../utils/tokenManager');
 
 // Repositories
-const { db, getDocs, collection } = require('../../repositories/firebase/firebaseRepository');
+const TodoRepository = require('../../repositories/firebase/todoRepository');
+const todoRepository = new TodoRepository();
 
 // Validator
 // const authenticationValidator = require('../../validators/authenticationValidator');
 
-// Model
-const todoModel = require('../../models/firebase/todo');
-
 router.get('/', async (req, res) => {
-    const todos = await getDocs(collection(db, 'todo'));
-    const todosArray = [];
-
-    todos.forEach(doc => {
-        const todo = new todoModel(
-            doc.data().uuid, 
-            doc.data().todo_name, 
-            doc.data().status, 
-            doc.data().is_active
-        );
-        todosArray.push(todo);
-    });
+    const todos = await todoRepository.getTodos();
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todosArray
+        data: todos
     });
 
 });
