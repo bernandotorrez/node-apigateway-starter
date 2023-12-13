@@ -1,26 +1,15 @@
 const Joi = require('@hapi/joi');
 const BadRequestError = require('../exceptions/BadRequestError');
 
-const LoginSchema = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
+const TodoSchema = Joi.object({
+    uuid: Joi.string(),
+    todo_name: Joi.string().min(3).required(),
+    status: Joi.number(),
+    is_active: Joi.number()
 })
 
-const LoginValidator = (payload) => {
-    const validationResult = LoginSchema.validate(payload);
-
-    if(validationResult.error) {
-        throw new BadRequestError(validationResult.error.message);
-    }
-}
-
-const RegisterSchema = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
-})
-
-const RegisterValidator = (payload) => {
-    const validationResult = RegisterSchema.validate(payload);
+const CreateTodoValidator = (payload) => {
+    const validationResult = TodoSchema.validate(payload);
 
     if(validationResult.error) {
         throw new BadRequestError(validationResult.error.message);
@@ -28,6 +17,5 @@ const RegisterValidator = (payload) => {
 }
 
 module.exports = {
-    LoginValidator,
-    RegisterValidator
+    CreateTodoValidator
 }

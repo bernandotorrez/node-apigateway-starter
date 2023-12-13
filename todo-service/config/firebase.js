@@ -4,6 +4,9 @@ const {
     getFirestore,
     collection,
     getDocs,
+    setDoc,
+    doc,
+    addDoc
 } = require('firebase/firestore')
 
 dotenv.config()
@@ -32,6 +35,9 @@ const db = getFirestore(app);
 
 module.exports = {
     db,
+    doc,
+    addDoc,
     getDocs,
+    setDoc,
     collection
 };
