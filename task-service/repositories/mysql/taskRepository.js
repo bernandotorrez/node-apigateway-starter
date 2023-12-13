@@ -18,7 +18,6 @@ class TaskRepository {
         } else {
             return await this._model.findAll()
         }
-        
     }
 
     async getTask({ id = '' }) {
