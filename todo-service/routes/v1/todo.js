@@ -12,16 +12,31 @@ const todoRepository = new TodoRepository();
 
 // Validator
 const todoValidator = require('../../validators/todoValidator');
+const MemcachierRepository = require('../../repositories/memjs/memcachierRepository');
+const memcachierRepository = new MemcachierRepository();
 
 router.get('/', async (req, res) => {
-    const todos = await todoRepository.getTodos();
-
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todos
-    });
+    try {
+        const todos = await memcachierRepository.get(`todo:all`);
+  
+        res.status(httpStatus.OK).json({
+           code: httpStatus.OK,
+           status: 'SUCCESS',
+           message: httpStatus[`${httpStatus.OK}_NAME`],
+           data: JSON.parse(todos)
+        });
+     } catch (err) {
+        const todos = await todoRepository.getTodos();
+  
+        await memcachierRepository.set(`todo:all`, JSON.stringify(todos), 60);
+  
+        res.status(httpStatus.OK).json({
+           code: httpStatus.OK,
+           status: 'SUCCESS',
+           message: httpStatus[`${httpStatus.OK}_NAME`],
+           data: todos
+        });
+     }
 });
 
 router.post('/', async (req, res) => {
