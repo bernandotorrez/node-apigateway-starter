@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
     });
 });
 
-router.get('/get/:uuid', async (req, res) => {
+router.get('/get/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     const todo = await todoRepository.getOneTodo(uuid);
@@ -65,6 +65,19 @@ router.put('/:uuid', async (req, res) => {
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
         data: updateTodo
+    });
+});
+
+router.delete('/:uuid?', async (req, res) => {
+    const { uuid } = req.params;
+
+    const todo = await todoRepository.deleteTodo(uuid);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        status: 'SUCCESS',
+        message: httpStatus[`${httpStatus.OK}_NAME`],
+        data: todo
     });
 });
 
