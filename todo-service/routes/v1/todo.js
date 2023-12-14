@@ -39,4 +39,17 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.get('/get/:uuid', async (req, res) => {
+    const { uuid } = req.params;
+
+    const todo = await todoRepository.getTodoByUuid(uuid);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        status: 'SUCCESS',
+        message: httpStatus[`${httpStatus.OK}_NAME`],
+        data: todo
+    });
+});
+
 module.exports = router;

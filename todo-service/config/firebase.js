@@ -6,7 +6,8 @@ const {
     getDocs,
     setDoc,
     doc,
-    addDoc
+    addDoc,
+    getDoc
 } = require('firebase/firestore')
 
 dotenv.config()
@@ -39,5 +40,6 @@ module.exports = {
     addDoc,
     getDocs,
     setDoc,
+    getDoc,
     collection
 };

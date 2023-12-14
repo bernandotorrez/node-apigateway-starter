@@ -1,0 +1,5 @@
+{"level":"error","message":"FirebaseError: [code=invalid-argument]: Function collection() cannot be called with an empty path.","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"14-12-2023 13:18:5"}
+{"level":"error","message":"TypeError: db.collection is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"14-12-2023 13:18:25"}
+{"level":"error","message":"TypeError: Cannot read property 'indexOf' of undefined","httpStatus":"500","ip":"::1","url":"/v1/todos/get/","method":"GET","timestamp":"14-12-2023 13:34:7"}
+{"level":"error","message":"ReferenceError: NotFoundError is not defined","httpStatus":"500","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2","method":"GET","timestamp":"14-12-2023 13:36:5"}
+{"level":"error","message":"NotFoundError: Todo not found","httpStatus":"404","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2","method":"GET","timestamp":"14-12-2023 13:36:34"}
