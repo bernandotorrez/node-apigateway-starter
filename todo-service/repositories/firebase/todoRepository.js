@@ -1,4 +1,4 @@
-const { db, getDocs, collection, doc, setDoc, addDoc, getDoc, updateDoc } = require('../../config/firebase');
+const { db } = require('../../config/firebase');
 const todoModel = require('../../models/firebase/todo');
 const { v4: uuid4 } = require('uuid');
 const InvariantError = require('../../exceptions/InvariantError');
@@ -7,7 +7,7 @@ const ServerError = require('../../exceptions/ServerError');
 
 class TodoRepository {
   async getTodos() {
-      const todos = await getDocs(collection(db, 'todo'));
+      const todos = await db.collection('todo').get();
       const todosArray = [];
 
       todos.forEach(doc => {
@@ -33,11 +33,15 @@ class TodoRepository {
     };
 
     try {
-      await setDoc(doc(db, 'todo', uuid), data);
+      const create = await db.collection('todo').doc(uuid).set(data);
 
-      return data;
+      if(create) {
+        return data;
+      } else {
+        throw new ServerError('Error Insert Data')
+      }
     } catch (err) {
-      throw new ServerError('Error insert data');
+      throw new ServerError('Error Insert data');
     }
   }
 
@@ -46,11 +50,11 @@ class TodoRepository {
       throw new InvariantError('UUID not Provided');
     }
 
-    const docRef = doc(db, 'todo', uuid);
-    const docSnap = await getDoc(docRef);
+    const docRef = db.collection('todo').doc(uuid);
+    const doc = await docRef.get();
 
-    if(docSnap.exists()) {
-      return docSnap.data();
+    if(doc.exists) {
+      return doc.data();
     } else {
       throw new NotFoundError('Todo not found');
     }
@@ -66,11 +70,16 @@ class TodoRepository {
     };
 
     try {
-      await updateDoc(doc(db, 'todo', uuid), data);
+      const cityRef = db.collection('todo').doc(uuid);
+      const update = await cityRef.update(data);
 
-      return data;
+      if(update) {
+        return data;
+      } else {
+        throw new ServerError('Error Update data');
+      }
     } catch (err) {
-      throw new ServerError('Error update data');
+      throw new ServerError('Error Update data');
     }
   }
 }
