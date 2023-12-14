@@ -1,8 +1,9 @@
-const { db, getDocs, collection, doc, setDoc, addDoc, getDoc } = require('../../config/firebase');
+const { db, getDocs, collection, doc, setDoc, addDoc, getDoc, updateDoc } = require('../../config/firebase');
 const todoModel = require('../../models/firebase/todo');
 const { v4: uuid4 } = require('uuid');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
+const ServerError = require('../../exceptions/ServerError');
 
 class TodoRepository {
   async getTodos() {
@@ -22,7 +23,8 @@ class TodoRepository {
     return todosArray;
   }
 
-  async createTodo({ uuid = uuid4(),todo_name, status = 1, is_active = 1}) {
+  async createTodo(params) {
+    const { uuid = uuid4(),todo_name, status = 1, is_active = 1 } = params
     const data = {
       uuid,
       todo_name,
@@ -30,16 +32,16 @@ class TodoRepository {
       is_active
     };
 
-    const create = await setDoc(doc(db, 'todo', uuid), data)
+    try {
+      await setDoc(doc(db, 'todo', uuid), data);
 
-    if(!create) {
-      return create;
-    } else {
       return data;
+    } catch (err) {
+      throw new ServerError('Error insert data');
     }
   }
 
-  async getTodoByUuid(uuid) {
+  async getOneTodo(uuid) {
     if(uuid === '') {
       throw new InvariantError('UUID not Provided');
     }
@@ -51,6 +53,24 @@ class TodoRepository {
       return docSnap.data();
     } else {
       throw new NotFoundError('Todo not found');
+    }
+  }
+
+  async updateTodo(params) {
+    const { uuid, todo_name, status = 1, is_active = 1 } = params
+
+    const data = {
+      todo_name,
+      status,
+      is_active
+    };
+
+    try {
+      await updateDoc(doc(db, 'todo', uuid), data);
+
+      return data;
+    } catch (err) {
+      throw new ServerError('Error update data');
     }
   }
 }

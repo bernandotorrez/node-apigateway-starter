@@ -3,3 +3,11 @@
 {"level":"error","message":"TypeError: Cannot read property 'indexOf' of undefined","httpStatus":"500","ip":"::1","url":"/v1/todos/get/","method":"GET","timestamp":"14-12-2023 13:34:7"}
 {"level":"error","message":"ReferenceError: NotFoundError is not defined","httpStatus":"500","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2","method":"GET","timestamp":"14-12-2023 13:36:5"}
 {"level":"error","message":"NotFoundError: Todo not found","httpStatus":"404","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2","method":"GET","timestamp":"14-12-2023 13:36:34"}
+{"level":"error","message":"ReferenceError: todo_namea is not defined","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"14-12-2023 14:29:20"}
+{"level":"error","message":"TypeError: getDocs(...).limit is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"14-12-2023 16:17:37"}
+{"level":"error","message":"TypeError: collection(...).limit is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"14-12-2023 16:17:49"}
+{"level":"error","message":"TypeError: db.collection is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"14-12-2023 16:28:24"}
+{"level":"error","message":"FirebaseError: [code=invalid-argument]: Invalid document reference. Document references must have an even number of segments, but todo has 1.","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"14-12-2023 16:28:53"}
+{"level":"error","message":"TypeError: todos.where is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"14-12-2023 16:30:41"}
+{"level":"error","message":"TypeError: getDoc(...).limit is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2ca-3e157c054fb8a","method":"GET","timestamp":"14-12-2023 16:34:22"}
+{"level":"error","message":"NotFoundError: Todo not found","httpStatus":"404","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2ca-3e157c054fb8a","method":"GET","timestamp":"14-12-2023 16:34:27"}
