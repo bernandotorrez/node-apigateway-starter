@@ -29,3 +29,8 @@
 {"level":"error","message":"NotFoundError: Todo does not exist","httpStatus":"404","ip":"::1","url":"/v1/todos/9bcc4932-3b03-444a-9de2-7d500cb59471","method":"PUT","timestamp":"14-12-2023 22:53:23"}
 {"level":"error","message":"BadRequestError: UUID is required","httpStatus":"400","ip":"::1","url":"/v1/todos/get/","method":"GET","timestamp":"14-12-2023 22:54:37"}
 {"level":"error","message":"NotFoundError: Todo not found","httpStatus":"404","ip":"::1","url":"/v1/todos/get/06e7901b-704c-42d5-b2ca-3e157c054fb8","method":"GET","timestamp":"14-12-2023 22:55:32"}
+{"level":"error","message":"BadRequestError: UUID is required","httpStatus":"400","ip":"::1","url":"/v1/todos/get/","method":"GET","timestamp":"14-12-2023 22:57:27"}
+{"level":"error","message":"BadRequestError: UUID is required","httpStatus":"400","ip":"::1","url":"/v1/todos/","method":"PUT","timestamp":"14-12-2023 22:58:16"}
+{"level":"error","message":"NotFoundError: Todo does not exist","httpStatus":"404","ip":"::1","url":"/v1/todos/9bcc4932-3b03-444a-9de2-7d500cb59471","method":"PUT","timestamp":"14-12-2023 22:58:20"}
+{"level":"error","message":"BadRequestError: UUID is required","httpStatus":"400","ip":"::1","url":"/v1/todos/","method":"DELETE","timestamp":"14-12-2023 22:58:27"}
+{"level":"error","message":"InvariantError: Todo already deleted","httpStatus":"200","ip":"::1","url":"/v1/todos/9bcc4932-3b03-444a-9de2-7d500cb59471","method":"DELETE","timestamp":"14-12-2023 22:58:30"}

@@ -52,7 +52,7 @@ router.get('/get/:uuid?', async (req, res) => {
     });
 });
 
-router.put('/:uuid', async (req, res) => {
+router.put('/:uuid?', async (req, res) => {
     todoValidator.CreateTodoValidator(req.body);
 
     const updateTodo = await todoRepository.updateTodo({
