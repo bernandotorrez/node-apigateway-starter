@@ -20,7 +20,9 @@ class TodoRepository {
             doc.data().uuid, 
             doc.data().todo_name, 
             doc.data().status, 
-            doc.data().is_active
+            doc.data().is_active,
+            doc.data().created_date,
+            doc.data().updated_date
         );
         todosArray.push(todo);
     });
@@ -29,12 +31,22 @@ class TodoRepository {
   }
 
   async createTodo(params) {
-    const { uuid = uuid4(),todo_name, status = 1, is_active = 1 } = params
+    const { 
+      uuid = uuid4(),
+      todo_name,
+      status = 1,
+      is_active = 1,
+      created_date = Math.floor(new Date().getTime() / 1000),
+      updated_date = null,
+    } = params
+
     const data = {
       uuid,
       todo_name,
       status,
-      is_active
+      is_active,
+      created_date,
+      updated_date
     };
 
     try {

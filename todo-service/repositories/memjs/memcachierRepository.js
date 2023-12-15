@@ -41,7 +41,7 @@ class MemcachierRepository {
   
     delete(key) {
       return new Promise((resolve, reject) => {
-        this._client.del(key, (error, count) => {
+        this._client.delete(key, (error, count) => {
           if (error) {
             return reject(error);
           }

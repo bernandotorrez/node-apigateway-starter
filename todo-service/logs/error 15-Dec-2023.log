@@ -1,0 +1,6 @@
+{"level":"error","message":"TypeError: this._client.del is not a function","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"15-12-2023 11:40:15"}
+{"level":"error","message":"Error: Nilai tidak ditemukan","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"15-12-2023 11:44:22"}
+{"level":"error","message":"Error: Nilai tidak ditemukan","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"GET","timestamp":"15-12-2023 11:44:23"}
+{"level":"error","message":"ServerError: Error Insert data","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"15-12-2023 11:54:40"}
+{"level":"error","message":"ServerError: Error Insert data","httpStatus":"500","ip":"::1","url":"/v1/todos","method":"POST","timestamp":"15-12-2023 11:56:44"}
+{"level":"error","message":"InvariantError: Todo already deleted","httpStatus":"200","ip":"::1","url":"/v1/todos/531af235-90ea-4c71-89a0-5872dee68676","method":"DELETE","timestamp":"15-12-2023 11:59:7"}

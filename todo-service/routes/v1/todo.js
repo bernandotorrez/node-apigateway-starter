@@ -46,6 +46,10 @@ router.post('/', async (req, res) => {
         todo_name: req.body.todo_name,
     });
 
+    if(createTodo) {
+        await memcachierRepository.delete('todo:all');
+    }
+
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
@@ -75,6 +79,10 @@ router.put('/:uuid?', async (req, res) => {
         todo_name: req.body.todo_name,
     });
 
+    if(updateTodo) {
+        await memcachierRepository.delete('todo:all');
+    }
+
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
@@ -87,6 +95,10 @@ router.delete('/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     const todo = await todoRepository.deleteTodo(uuid);
+
+    if(todo) {
+        await memcachierRepository.delete('todo:all');
+    }
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
