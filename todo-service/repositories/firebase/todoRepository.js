@@ -85,7 +85,11 @@ class TodoRepository {
   }
 
   async updateTodo(params) {
-    const { uuid, todo_name, status = 1, is_active = 1 } = params
+    const { 
+      uuid,
+      todo_name,
+      updated_date = Math.floor(new Date().getTime() / 1000),
+    } = params
 
     if(!uuid) {
       throw new BadRequestError('UUID is required');
@@ -99,8 +103,7 @@ class TodoRepository {
 
     const data = {
       todo_name,
-      status,
-      is_active
+      updated_date
     };
 
     try {
@@ -110,9 +113,7 @@ class TodoRepository {
       if(update) {
         const todo = new todoModel(
           uuid,
-          todo_name,
-          status,
-          is_active
+          todo_name
         );
   
         return todo;
