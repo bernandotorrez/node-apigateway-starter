@@ -61,26 +61,43 @@ router.post('/', async (req, res) => {
 router.get('/get/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
-    const todo = await todoRepository.getOneTodo(uuid);
+    try {
+        const todo = await memcachierRepository.get(`todo:${uuid}`);
+  
+        res.status(httpStatus.OK).json({
+           code: httpStatus.OK,
+           status: 'SUCCESS',
+           message: httpStatus[`${httpStatus.OK}_NAME`],
+           data: JSON.parse(todo)
+        });
+    } catch (err) {
+        const todo = await todoRepository.getOneTodo(uuid);
 
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todo
-    });
+        await memcachierRepository.set(`todo:${uuid}`, JSON.stringify(todo), 60);
+
+        res.status(httpStatus.OK).json({
+            code: httpStatus.OK,
+            status: 'SUCCESS',
+            message: httpStatus[`${httpStatus.OK}_NAME`],
+            data: todo
+        });
+    }
 });
 
 router.put('/:uuid?', async (req, res) => {
     todoValidator.CreateTodoValidator(req.body);
 
+    const { uuid } = req.params;
+    const { todo_name } = req.body;
+
     const updateTodo = await todoRepository.updateTodo({
-        uuid: req.params.uuid,
-        todo_name: req.body.todo_name,
+        uuid,
+        todo_name
     });
 
     if(updateTodo) {
         await memcachierRepository.delete('todo:all');
+        await memcachierRepository.delete(`todo:${uuid}`);
     }
 
     res.status(httpStatus.OK).json({

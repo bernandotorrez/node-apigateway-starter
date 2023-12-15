@@ -13,7 +13,7 @@ class MemcachierRepository {
   
     set(key, value, expirationInSecond = 3600) {
       return new Promise((resolve, reject) => {
-        this._client.set(key, value, expirationInSecond, (error, ok) => {
+        this._client.set(key, value, { expires: expirationInSecond }, (error, ok) => {
           if (error) {
             return reject(error);
           }
