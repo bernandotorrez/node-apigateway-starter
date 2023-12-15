@@ -115,6 +115,7 @@ router.delete('/:uuid?', async (req, res) => {
 
     if(todo) {
         await memcachierRepository.delete('todo:all');
+        await memcachierRepository.delete(`todo:${uuid}`);
     }
 
     res.status(httpStatus.OK).json({
