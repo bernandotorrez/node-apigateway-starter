@@ -16,36 +16,8 @@ const refreshTokenRepository = new RefreshTokenRepository();
 const CacheRepository = require('../../repositories/redis/cacheRepository');
 const cacheRepository = new CacheRepository();
 
-const { db, getDocs, collection } = require('../../repositories/firebase/firebaseRepository');
-
 // Validator
 const authenticationValidator = require('../../validators/authenticationValidator');
-
-// Model
-const todoModel = require('../../models/firebase/todo');
-
-router.get('/firebase', async (req, res) => {
-    const todos = await getDocs(collection(db, 'todo'));
-    const todosArray = [];
-
-    todos.forEach(doc => {
-        const todo = new todoModel(
-            doc.data().uuid, 
-            doc.data().todo_name, 
-            doc.data().status, 
-            doc.data().is_active
-        );
-        todosArray.push(todo);
-    });
-
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todosArray
-    });
-
-});
 
 router.post('/register', async (req, res) => {
     authenticationValidator.RegisterValidator(req.body);
