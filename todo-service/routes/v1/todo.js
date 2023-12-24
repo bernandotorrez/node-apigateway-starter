@@ -2,9 +2,6 @@ const express = require('express');
 require('express-async-errors');
 const router = express.Router();
 const httpStatus = require('http-status');
-// const jwt = require('jsonwebtoken');
-const rateLimit = require('../../utils/rateLimiter');
-// const tokenManager = require('../../utils/tokenManager');
 
 // Repositories
 const TodoRepository = require('../../repositories/firebase/todoRepository');
@@ -17,7 +14,7 @@ const todoValidator = require('../../validators/todoValidator');
 const CacheRepository = require('../../repositories/redis/cacheRepository');
 const cacheRepository = new CacheRepository();
 
-router.get('/', rateLimit, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const todos = await cacheRepository.get(`todo:all`);
   
@@ -41,7 +38,7 @@ router.get('/', rateLimit, async (req, res) => {
      }
 });
 
-router.post('/', rateLimit, async (req, res) => {
+router.post('/', async (req, res) => {
     todoValidator.CreateTodoValidator(req.body);
 
     const createTodo = await todoRepository.createTodo({
@@ -60,7 +57,7 @@ router.post('/', rateLimit, async (req, res) => {
     });
 });
 
-router.get('/get/:uuid?', rateLimit, async (req, res) => {
+router.get('/get/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     try {
@@ -86,7 +83,7 @@ router.get('/get/:uuid?', rateLimit, async (req, res) => {
     }
 });
 
-router.put('/:uuid?', rateLimit, async (req, res) => {
+router.put('/:uuid?', async (req, res) => {
     todoValidator.CreateTodoValidator(req.body);
 
     const { uuid } = req.params;
@@ -110,7 +107,7 @@ router.put('/:uuid?', rateLimit, async (req, res) => {
     });
 });
 
-router.delete('/:uuid?', rateLimit, async (req, res) => {
+router.delete('/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     const todo = await todoRepository.deleteTodo(uuid);

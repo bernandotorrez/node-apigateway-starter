@@ -12,10 +12,12 @@ const compression = require('compression');
 const httpStatus = require('http-status');
 
 // const jwt = require('jsonwebtoken');
+const authMiddleware = require('./middleware/auth');
 
 // setiap membuat file router baru, silahkan panggil disini
 const taskRouterV1 = require('./routes/v1/task');
 const authRouterV1 = require('./routes/v1/authentication');
+const todoRouterV1 = require('./routes/v1/todo');
 const BadRequestError = require('./exceptions/BadRequestError');
 
 const app = express();
@@ -27,7 +29,10 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(bearerToken());
-app.use(cors())
+app.use(cors());
+
+// Use Middleware to all Routes
+app.use(authMiddleware);
 
 // wajib saat naik ke production
 console.log(process.env.NODE_ENV)
@@ -43,6 +48,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 // setiap ada penambahan Router, inisialisasi index nya disini
 app.use('/api-gateway/v1/task', taskRouterV1);
 app.use('/api-gateway/v1/auth', authRouterV1);
+app.use('/api-gateway/v1/todo', todoRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {

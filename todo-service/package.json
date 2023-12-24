@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "pm2:dev": "cross-env NODE_ENV=development&& pm2 start server.js -i 2 --name todo-service",
+    "pm2:dev": "cross-env NODE_ENV=development&& pm2 start server.js -i 1 --name todo-service",
     "pm2:prod": "cross-env NODE_ENV=production&& pm2 start server.js -i 2 --name todo-service",
     "test": "jest --forceExit"
   },

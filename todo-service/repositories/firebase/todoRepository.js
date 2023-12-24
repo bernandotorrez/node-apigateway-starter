@@ -12,7 +12,10 @@ class TodoRepository {
   }
 
   async getTodos() {
-      const todos = await db.collection(this._collection).where('is_active', '==', 1).get();
+      const todos = await db.collection(this._collection)
+      .where('is_active', '==', 1)
+      .orderBy('created_date', 'desc')
+      .get();
       const todosArray = [];
 
       todos.forEach(doc => {

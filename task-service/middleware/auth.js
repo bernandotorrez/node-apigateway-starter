@@ -8,7 +8,7 @@ function auth(req, res, next) {
         res.status(401).send({
             code: 401,
             status: 'ERROR',
-            message: 'token not set',
+            message: 'Token is Empty',
             data: null,
         });
     } else {
@@ -17,12 +17,22 @@ function auth(req, res, next) {
             req.user = decoded;
             next();
         } catch(ex) {
-            res.status(401).send({
-                code: 401,
-                status: 'ERROR',
-                message: 'token invalid',
-                data: null,
-            });
+            if(ex instanceof jwt.TokenExpiredError) {
+                res.status(401).send({
+                    code: 401,
+                    status: 'ERROR',
+                    message: 'Token is Expired',
+                    data: null,
+                });
+            } else {
+                res.status(401).send({
+                    code: 401,
+                    status: 'ERROR',
+                    message: 'Token is Invalid',
+                    data: null,
+                });
+            }
+            
         }
     }
 }

@@ -13,6 +13,10 @@ const httpStatus = require('http-status');
 
 // const jwt = require('jsonwebtoken');
 
+// Middleware
+const authMiddleware = require('./middleware/auth');
+const rateLimit = require('./utils/rateLimiter');
+
 // setiap membuat file router baru, silahkan panggil disini
 const todoRouterV1 = require('./routes/v1/todo');
 
@@ -27,6 +31,9 @@ app.use(express.urlencoded({
 app.use(bearerToken());
 app.use(cors())
 
+// Use Middleware to all Routes
+app.use([authMiddleware, rateLimit]);
+
 // wajib saat naik ke production
 if (process.env.NODE_ENV == 'production') {
     app.use(helmet());
@@ -38,7 +45,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 }
 
 // setiap ada penambahan Router, inisialisasi index nya disini
-app.use('/v1/todos', todoRouterV1);
+app.use('/v1/todo', todoRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {

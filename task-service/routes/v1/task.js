@@ -2,8 +2,6 @@ const express = require('express');
 require('express-async-errors');
 const router = express.Router();
 const httpStatus = require('http-status');
-const InvariantError = require('../../exceptions/InvariantError');
-const rateLimit = require('../../utils/rateLimiter');
 
 // Repositories
 const TaskRepository = require('../../repositories/mysql/taskRepository');
@@ -22,7 +20,7 @@ const taskValidator = require('../../validators/taskValidator');
 // Explain : using try catch to check if data found in Cache / Redis or no
 // Error Handling should in Repository
 
-router.get('/', rateLimit, async (req, res) => {
+router.get('/', async (req, res) => {
    const { task } = req.query;
    try {
       const tasks = await cacheRepository.get(`task:all:wheretask:${task}`);
@@ -47,7 +45,7 @@ router.get('/', rateLimit, async (req, res) => {
    }
 })
 
-router.get('/:id', rateLimit, async (req, res) => {
+router.get('/:id', async (req, res) => {
    const {
       id
    } = req.params;
@@ -77,7 +75,7 @@ router.get('/:id', rateLimit, async (req, res) => {
    }
 })
 
-router.post('/', rateLimit, async (req, res) => {
+router.post('/', async (req, res) => {
    taskValidator.AddTaskValidator(req.body);
 
    const task = await taskRepository.addTask(req.body);
@@ -94,7 +92,7 @@ router.post('/', rateLimit, async (req, res) => {
    });
 })
 
-router.put('/:id', rateLimit, async (req, res) => {
+router.put('/:id', async (req, res) => {
    const { id } = req.params;
    
    const task = await taskRepository.updateTask({ id, body: req.body })
@@ -112,7 +110,7 @@ router.put('/:id', rateLimit, async (req, res) => {
    });
 })
 
-router.delete('/:id', rateLimit, async (req, res) => {
+router.delete('/:id', async (req, res) => {
    const { id } = req.params;
    
    const task = await taskRepository.deleteTask({ id })

@@ -13,6 +13,7 @@ const httpStatus = require('http-status');
 
 // Middleware
 const authMiddleware = require('./middleware/auth');
+const rateLimit = require('./utils/rateLimiter');
 
 // const jwt = require('jsonwebtoken');
 
@@ -29,6 +30,9 @@ app.use(express.urlencoded({
 }));
 app.use(bearerToken());
 app.use(cors())
+
+// Use Middleware to all Routes
+app.use([authMiddleware, rateLimit]);
 
 // wajib saat naik ke production
 if (process.env.NODE_ENV == 'production') {
