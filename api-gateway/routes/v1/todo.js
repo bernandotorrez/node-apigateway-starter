@@ -27,8 +27,8 @@ router.get('/get/:uuid?', async (req, res) => {
         }
     }
 
-    const { id } = req.params;
-    const todo = await api.get(`/v1/todo/${id}`, headers);
+    const { uuid } = req.params;
+    const todo = await api.get(`/v1/todo/${uuid}`, headers);
     return res.json(todo.data)
 });
 
@@ -40,14 +40,7 @@ router.post('/', async (req, res) => {
         }
     }
 
-    // Body
-    const { todo_name } = req.body;
-
-    const body = {
-        todo_name
-    }
-
-    const todo = await api.post(`/v1/todo`, body, headers);
+    const todo = await api.post(`/v1/todo`, req.body, headers);
     return res.json(todo.data)
 })
 
@@ -59,18 +52,21 @@ router.put('/:uuid?', async (req, res) => {
         }
     }
 
-    // Param
-    const { uuid } = req.params;
-
-    // Body
-    const { todo_name } = req.body;
-
-    const body = {
-        todo_name
-    }
-
-    const todo = await api.put(`/v1/todo/${uuid}`, body, headers);
+    const todo = await api.put(`/v1/todo/${uuid}`, req.body, headers);
     return res.json(todo.data)
+})
+
+router.delete('/:uuid?', async (req, res) => {
+   const accessToken = req.header('X-Auth-Token')
+   const headers = {
+      headers: {
+         'X-Auth-Token': accessToken
+      }
+   }
+
+   const { uuid } = req.params;
+   const task = await api.delete(`/v1/task/${uuid}`, headers);
+   return res.json(task.data)
 })
 
 module.exports = router;

@@ -10,7 +10,7 @@ const taskRepository = new TaskRepository();
 const CacheRepository = require('../../repositories/redis/cacheRepository');
 const cacheRepository = new CacheRepository();
 
-const rabbitMq = require('../../repositories/messageBroker/rabbitmqRepository');
+// const rabbitMq = require('../../repositories/messageBroker/rabbitmqRepository');
 
 const taskValidator = require('../../validators/taskValidator');
 
