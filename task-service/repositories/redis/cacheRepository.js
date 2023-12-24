@@ -4,6 +4,9 @@ class CacheRepository {
   constructor() {
     this._client = redis.createClient({
       host: process.env.REDIS_SERVER,
+      port: process.env.REDIS_PORT,
+      auth_user: process.env.REDIS_USER,
+      auth_pass: process.env.REDIS_PASS
     });
 
     this._client.on('error', (error) => {
