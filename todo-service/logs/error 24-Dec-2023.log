@@ -1,0 +1,1 @@
+{"level":"error","message":"NotFoundError: Todo does not exist","httpStatus":"404","ip":"::1","url":"/v1/todos/05c9f9c3-0f2f-436e-852d-3703ee3266b2","method":"PUT","timestamp":"24-12-2023 13:4:8"}

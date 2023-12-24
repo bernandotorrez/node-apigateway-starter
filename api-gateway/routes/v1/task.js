@@ -35,7 +35,7 @@ router.get('/:id', auth, async (req, res) => {
    return res.json(task.data)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
    const accessToken = req.header('X-Auth-Token')
    const headers = {
       headers: {
@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
    return res.json(task.data)
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
    const accessToken = req.header('X-Auth-Token')
    const headers = {
       headers: {
@@ -60,7 +60,7 @@ router.put('/:id', async (req, res) => {
    return res.json(task.data)
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
    const accessToken = req.header('X-Auth-Token')
    const headers = {
       headers: {
