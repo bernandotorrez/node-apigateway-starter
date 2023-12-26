@@ -32,7 +32,7 @@ app.use(bearerToken());
 app.use(cors());
 
 // Use Middleware to all Routes
-app.use(authMiddleware);
+//app.use(authMiddleware);
 
 // wajib saat naik ke production
 console.log(process.env.NODE_ENV)
@@ -46,9 +46,9 @@ if (!process.env.JWT_PRIVATE_KEY) {
 }
 
 // setiap ada penambahan Router, inisialisasi index nya disini
-app.use('/api-gateway/v1/task', taskRouterV1);
 app.use('/api-gateway/v1/auth', authRouterV1);
-app.use('/api-gateway/v1/todo', todoRouterV1);
+app.use('/api-gateway/v1/task', authMiddleware, taskRouterV1);
+app.use('/api-gateway/v1/todo', authMiddleware, todoRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {
@@ -164,7 +164,7 @@ app.use(function (err, req, res, next) {
             message: err.message || 'Service Unavailable',
             data: null
         });
-    } else if(err.response.data) {
+    } else if(err.response) {
         res.status(err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR).json({
             code: err.response.data.code || httpStatus.INTERNAL_SERVER_ERROR,
             status: 'ERROR',

@@ -13,14 +13,43 @@ router.post('/login', async (req, res) => {
    const accessToken = user.headers['x-auth-token'];
    const refreshToken = user.headers['x-auth-refresh-token'];
    res.header('X-Auth-Token', accessToken);
-   res.header('X-Auth-Refresh-Token', refreshToken)
-   return res.json(user.data)
-})
+   res.header('X-Auth-Refresh-Token', refreshToken);
+   return res.json(user.data);
+});
 
 router.post('/register', async (req, res) => {
    const { username, password } = req.body;
    const user = await api.post('/v1/auth/register', { username, password });
    return res.json(user.data);
-})
+});
+
+router.put('/refresh-token', async (req, res) => {
+   const accessToken = req.header('X-Auth-Refresh-Token')
+   const headers = {
+      headers: {
+         'X-Auth-Refresh-Token': accessToken
+      }
+   }
+   
+   const user = await api.put('/v1/auth/refresh-token', {}, headers);
+
+   const accessTokenResponse = user.headers['x-auth-token'];
+   res.header('X-Auth-Token', accessTokenResponse);
+
+   return res.json(user.data);
+});
+
+router.delete('/logout', async (req, res) => {
+   const accessToken = req.header('X-Auth-Refresh-Token')
+   const headers = {
+      headers: {
+         'X-Auth-Refresh-Token': accessToken
+      }
+   }
+   
+   const user = await api.delete('/v1/auth/logout', headers);
+
+   return res.json(user.data);
+});
 
 module.exports = router;
