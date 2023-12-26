@@ -13,6 +13,9 @@ const httpStatus = require('http-status');
 
 // const jwt = require('jsonwebtoken');
 
+// Middleware
+const proxyMiddleware = require('./middleware/proxy');
+
 // setiap membuat file router baru, silahkan panggil disini
 const authRouterV1 = require('./routes/v1/authentication');
 
@@ -26,6 +29,7 @@ app.use(express.urlencoded({
 }));
 app.use(bearerToken());
 app.use(cors())
+app.use([proxyMiddleware]);
 
 // wajib saat naik ke production
 if (process.env.NODE_ENV == 'production') {
