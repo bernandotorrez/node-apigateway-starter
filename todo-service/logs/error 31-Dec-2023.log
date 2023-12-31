@@ -1,0 +1,1 @@
+{"level":"error","message":"AuthorizationError: Please HIT with API Gateway","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"POST","timestamp":"31-12-2023 11:14:23"}
