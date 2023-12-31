@@ -2,12 +2,205 @@
 	"info": {
 		"_postman_id": "fbb1bd9b-0ac4-4445-8ace-3e09c5952618",
 		"name": "My Microservices",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9508485"
 	},
 	"item": [
 		{
 			"name": "API Gateway",
 			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.environment.set('username', jsonData.data.user)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"B3rnando\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/register",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"B3rnando\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/login",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Auth-Refresh-Token",
+										"value": "{{REFRESH_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/refresh-token",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();\r",
+											"const { headers } = pm.response;\r",
+											"const accessToken = headers.get('X-Auth-Token');\r",
+											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
+											"\r",
+											"\r",
+											"// put refreshToken to env variable\r",
+											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
+											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Refresh-Token",
+										"value": "{{REFRESH_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/logout",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Task",
 					"item": [
@@ -74,14 +267,13 @@
 									}
 								],
 								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "task",
-											"value": "from gateway",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n    \"task\": \"{{$randomWords}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
 									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task",
@@ -157,20 +349,122 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Health Check",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/task/health",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"task",
+										"health"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
-					"name": "User",
+					"name": "Todo",
 					"item": [
 						{
-							"name": "Register",
+							"name": "Get All Todo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.environment.set('uuid', jsonData.data[0].uuid)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Auth-Refresh-Token",
+										"value": "{{REFRESH_TOKEN}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/todo",
+									"host": [
+										"{{URL_API_GATEWAY}}"
+									],
+									"path": [
+										"api-gateway",
+										"v1",
+										"todo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Todo By UUID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/get/{{uuid}}",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo",
+										"get",
+										"{{uuid}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Todo",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
+									"raw": "{\n    \"todo_name\": \"{{$randomWords}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -178,158 +472,73 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/register",
+									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/todo",
 									"host": [
 										"{{URL_API_GATEWAY}}"
 									],
 									"path": [
 										"api-gateway",
 										"v1",
-										"auth",
-										"register"
+										"todo"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Login",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const responseJson = pm.response.json();\r",
-											"const { headers } = pm.response;\r",
-											"const accessToken = headers.get('X-Auth-Token');\r",
-											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
-											"\r",
-											"\r",
-											"// put refreshToken to env variable\r",
-											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
-											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL_API_GATEWAY}}/api-gateway/v1/auth/login",
-									"host": [
-										"{{URL_API_GATEWAY}}"
-									],
-									"path": [
-										"api-gateway",
-										"v1",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Refresh Token",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const responseJson = pm.response.json();\r",
-											"const { headers } = pm.response;\r",
-											"const accessToken = headers.get('X-Auth-Token');\r",
-											"\r",
-											"\r",
-											"// put refreshToken to env variable\r",
-											"pm.environment.set('ACCESS_TOKEN', accessToken);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
+							"name": "Update Todo",
 							"request": {
 								"method": "PUT",
 								"header": [
 									{
-										"key": "X-Auth-Refresh-Token",
-										"value": "{{REFRESH_TOKEN}}",
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"todo_name\": \"{{$randomWords}} update\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
-									"raw": "{{URL_AUTH_SERVICE}}/v1/auth/refresh-token",
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/{{uuid}}",
 									"host": [
-										"{{URL_AUTH_SERVICE}}"
+										"{{URL_TODO_SERVICE}}"
 									],
 									"path": [
 										"v1",
-										"auth",
-										"refresh-token"
+										"todo",
+										"{{uuid}}"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Logout",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const responseJson = pm.response.json();\r",
-											"const { headers } = pm.response;\r",
-											"const accessToken = headers.get('X-Auth-Token');\r",
-											"const refreshToken = headers.get('X-Auth-Refresh-Token');\r",
-											"\r",
-											"\r",
-											"// put refreshToken to env variable\r",
-											"pm.environment.set('ACCESS_TOKEN', accessToken);\r",
-											"pm.environment.set('REFRESH_TOKEN', refreshToken);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
+							"name": "Delete Todo",
 							"request": {
 								"method": "DELETE",
 								"header": [
 									{
-										"key": "X-Auth-Refresh-Token",
-										"value": "{{REFRESH_TOKEN}}",
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
 										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{URL_AUTH_SERVICE}}/v1/auth/logout",
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/{{uuid}}",
 									"host": [
-										"{{URL_AUTH_SERVICE}}"
+										"{{URL_TODO_SERVICE}}"
 									],
 									"path": [
 										"v1",
-										"auth",
-										"logout"
+										"todo",
+										"{{uuid}}"
 									]
 								}
 							},
@@ -343,153 +552,6 @@
 			"name": "Services",
 			"item": [
 				{
-					"name": "Task",
-					"item": [
-						{
-							"name": "All Task",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"value": "{{ACCESS_TOKEN}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task",
-									"host": [
-										"{{URL_TASK_SERVICE}}"
-									],
-									"path": [
-										"v1",
-										"task"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Task By Id",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"value": "{{ACCESS_TOKEN}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/15",
-									"host": [
-										"{{URL_TASK_SERVICE}}"
-									],
-									"path": [
-										"v1",
-										"task",
-										"15"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add Task",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"value": "{{ACCESS_TOKEN}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "task",
-											"value": "adasd",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task",
-									"host": [
-										"{{URL_TASK_SERVICE}}"
-									],
-									"path": [
-										"v1",
-										"task"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Task",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"value": "{{ACCESS_TOKEN}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"task\": \"new update test\",\n    \"status\": \"1\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/21",
-									"host": [
-										"{{URL_TASK_SERVICE}}"
-									],
-									"path": [
-										"v1",
-										"task",
-										"21"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Task",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "X-Auth-Token",
-										"value": "{{ACCESS_TOKEN}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{URL_TASK_SERVICE}}/v1/task/1",
-									"host": [
-										"{{URL_TASK_SERVICE}}"
-									],
-									"path": [
-										"v1",
-										"task",
-										"1"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "User",
 					"item": [
 						{
@@ -499,7 +561,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
+									"raw": "{\n    \"username\": \"{{$randomUserName}}\",\n    \"password\": \"B3rnando\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -555,7 +617,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"bernando\",\n    \"password\": \"B3rnando\"\n}",
+									"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"B3rnando\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -657,6 +719,337 @@
 										"v1",
 										"auth",
 										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Task",
+					"item": [
+						{
+							"name": "All Task",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Task By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/15",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Task",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "task",
+											"value": "adasd",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Task",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"task\": \"kontil\",\n    \"status\": \"1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/21",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"21"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/task/1",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"task",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Health Check",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TASK_SERVICE}}/v1/health",
+									"host": [
+										"{{URL_TASK_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"health"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Todo",
+					"item": [
+						{
+							"name": "Get All Todo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();",
+											"",
+											"pm.environment.set('uuid_todo', jsonData.data[0].uuid)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Todo By UUID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/get/{{uuid_todo}}",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo",
+										"get",
+										"{{uuid_todo}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Todo",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"todo_name\": \"{{$randomWords}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Todo",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"todo_name\": \"{{$randomWords}} update\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/{{uuid_todo}}",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo",
+										"{{uuid_todo}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Todo",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{ACCESS_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL_TODO_SERVICE}}/v1/todo/{{uuid_todo}}",
+									"host": [
+										"{{URL_TODO_SERVICE}}"
+									],
+									"path": [
+										"v1",
+										"todo",
+										"{{uuid_todo}}"
 									]
 								}
 							},
