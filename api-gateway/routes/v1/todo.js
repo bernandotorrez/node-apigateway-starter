@@ -8,15 +8,25 @@ const { URL_TODO_SERVICE } = process.env
 const api = apiAdapter(URL_TODO_SERVICE);
 
 router.get('/', async (req, res) => {
-   const accessToken = req.header('X-Auth-Token')
-   const headers = {
-      headers: {
-         'X-Auth-Token': accessToken
-      }
-   };
+    const { next } = req.query;
 
-   const todo = await api.get('/v1/todo', headers);
-   return res.json(todo.data);
+    const accessToken = req.header('X-Auth-Token')
+    const headers = {
+        headers: {
+            'X-Auth-Token': accessToken
+        }
+    };
+
+    let url;
+
+    if(next) {
+        url = `v1/todo?next=${next}`;
+    } else {
+        url = 'v1/todo';
+    }
+
+    const todo = await api.get(url, headers);
+    return res.json(todo.data);
 });
 
 router.get('/get/:uuid?', async (req, res) => {

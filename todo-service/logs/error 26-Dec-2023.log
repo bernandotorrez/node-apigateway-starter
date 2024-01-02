@@ -1,5 +1,0 @@
-{"level":"error","message":"AuthorizationError: Please Hit with API Gateway","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"GET","timestamp":"26-12-2023 14:43:40"}
-{"level":"error","message":"AuthorizationError: Please Hit with API Gateway","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"GET","timestamp":"26-12-2023 14:43:48"}
-{"level":"error","message":"AuthorizationError: Request Blocked","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"GET","timestamp":"26-12-2023 14:44:41"}
-{"level":"error","message":"AuthorizationError: Please HIT with API Gateway","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"GET","timestamp":"26-12-2023 14:45:8"}
-{"level":"error","message":"AuthorizationError: Please HIT with API Gateway","httpStatus":"403","ip":"::1","url":"/v1/todo","method":"GET","timestamp":"26-12-2023 14:50:50"}

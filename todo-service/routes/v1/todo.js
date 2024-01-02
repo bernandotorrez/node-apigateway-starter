@@ -15,27 +15,38 @@ const CacheRepository = require('../../repositories/redis/cacheRepository');
 const cacheRepository = new CacheRepository();
 
 router.get('/', async (req, res) => {
-    try {
-        const todos = await cacheRepository.get(`todo:all`);
-  
-        res.status(httpStatus.OK).json({
-           code: httpStatus.OK,
-           status: 'SUCCESS',
-           message: httpStatus[`${httpStatus.OK}_NAME`],
-           data: JSON.parse(todos)
-        });
-     } catch (err) {
-        const todos = await todoRepository.getTodos();
-  
-        await cacheRepository.set(`todo:all`, JSON.stringify(todos), 60);
-  
-        res.status(httpStatus.OK).json({
-           code: httpStatus.OK,
-           status: 'SUCCESS',
-           message: httpStatus[`${httpStatus.OK}_NAME`],
-           data: todos
-        });
-     }
+    const { next } = req.query;
+    // try {
+    //     const todos = await cacheRepository.get(`todo:all`);
+
+    //     res.status(httpStatus.OK).json({
+    //         code: httpStatus.OK,
+    //         status: 'SUCCESS',
+    //         message: httpStatus[`${httpStatus.OK}_NAME`],
+    //         data: JSON.parse(todos)
+    //     });
+    // } catch (err) {
+    //     const todos = await todoRepository.getTodosCursor(next);
+
+    //     await cacheRepository.set(`todo:all`, JSON.stringify(todos), 60);
+
+    //     res.status(httpStatus.OK).json({
+    //         code: httpStatus.OK,
+    //         status: 'SUCCESS',
+    //         message: httpStatus[`${httpStatus.OK}_NAME`],
+    //         data: todos
+    //     });
+    // }
+    const todos = await todoRepository.getTodosCursor(next);
+
+    // await cacheRepository.set(`todo:all`, JSON.stringify(todos), 60);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        status: 'SUCCESS',
+        message: httpStatus[`${httpStatus.OK}_NAME`],
+        data: todos
+    });
 });
 
 router.post('/', async (req, res) => {

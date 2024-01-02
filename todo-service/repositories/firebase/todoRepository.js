@@ -11,6 +11,70 @@ class TodoRepository {
     this._collection = 'todo';
   }
 
+  async getTodosCursor(next = null) {
+    const first = db.collection(this._collection)
+      .orderBy('created_date', 'desc')
+      .limit(3);
+
+    const snapshot = await first.get();
+
+    const last = snapshot.docs[snapshot.docs.length - 1];
+    const currentCreatedDate = last.data().created_date;
+
+    const snapshotData = [];
+
+    if(next) {
+      const nextTodos = db.collection(this._collection)
+        .orderBy('created_date', 'desc')
+        .startAfter(parseInt(next))
+        .limit(3);
+
+      const nextData = await nextTodos.get();
+      const last = nextData.docs[nextData.docs.length - 1];
+      const currentCreatedDate = last.data().created_date;
+
+      nextData.forEach(doc => {
+        const data = new todoModel(
+          doc.data().uuid, 
+          doc.data().todo_name, 
+          doc.data().status, 
+          doc.data().is_active,
+          doc.data().created_date,
+          doc.data().updated_date
+        );
+
+        snapshotData.push(data);
+      });
+
+      const todosData = {
+        todos: snapshotData,
+        next: currentCreatedDate
+      }
+
+      return todosData;
+    } else {
+      snapshot.forEach(doc => {
+        const data = new todoModel(
+          doc.data().uuid, 
+          doc.data().todo_name, 
+          doc.data().status, 
+          doc.data().is_active,
+          doc.data().created_date,
+          doc.data().updated_date
+        );
+
+        snapshotData.push(data);
+      });
+
+      const todosData = {
+        todos: snapshotData,
+        next: currentCreatedDate
+      }
+
+      return todosData;
+    } 
+  }
+
   async getTodos() {
       const todos = await db.collection(this._collection)
       .where('is_active', '==', 1)

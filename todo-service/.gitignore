@@ -1,3 +1,4 @@
 node_modules/
 firebase_admin.json
+logs
 .env
