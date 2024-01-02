@@ -48,6 +48,7 @@ class TodoRepository {
 
       const todosData = {
         todos: snapshotData,
+        loadMore: snapshotData.length >= 3 ? true : false,
         next: currentCreatedDate
       }
 
@@ -68,6 +69,7 @@ class TodoRepository {
 
       const todosData = {
         todos: snapshotData,
+        loadMore: snapshotData.length >= 3 ? true : false,
         next: currentCreatedDate
       }
 
