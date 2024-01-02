@@ -9,12 +9,14 @@ const BadRequestError = require('../../exceptions/BadRequestError');
 class TodoRepository {
   constructor() {
     this._collection = 'todo';
+    this._limit = 5;
   }
 
   async getTodosCursor(next = null) {
     const first = db.collection(this._collection)
+      .where('is_active', '==', 1)
       .orderBy('created_date', 'desc')
-      .limit(3);
+      .limit(this._limit);
 
     const snapshot = await first.get();
 
@@ -25,9 +27,10 @@ class TodoRepository {
 
     if(next) {
       const nextTodos = db.collection(this._collection)
+        .where('is_active', '==', 1)
         .orderBy('created_date', 'desc')
         .startAfter(parseInt(next))
-        .limit(3);
+        .limit(this._limit);
 
       const nextData = await nextTodos.get();
       const last = nextData.docs[nextData.docs.length - 1];
@@ -48,7 +51,7 @@ class TodoRepository {
 
       const todosData = {
         todos: snapshotData,
-        loadMore: snapshotData.length >= 3 ? true : false,
+        loadMore: snapshotData.length >= this._limit ? true : false,
         next: currentCreatedDate
       }
 
@@ -69,7 +72,7 @@ class TodoRepository {
 
       const todosData = {
         todos: snapshotData,
-        loadMore: snapshotData.length >= 3 ? true : false,
+        loadMore: snapshotData.length >= this._limit ? true : false,
         next: currentCreatedDate
       }
 
