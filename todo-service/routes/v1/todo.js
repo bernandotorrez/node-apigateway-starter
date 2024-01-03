@@ -23,8 +23,7 @@ router.get('/', async (req, res) => {
         code: httpStatus.OK,
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todos,
-        cached: false
+        data: todos
     });
 });
 
