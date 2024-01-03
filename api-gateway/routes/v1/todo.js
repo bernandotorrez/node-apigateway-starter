@@ -8,8 +8,6 @@ const { URL_TODO_SERVICE } = process.env
 const api = apiAdapter(URL_TODO_SERVICE);
 
 router.get('/', async (req, res) => {
-    const { next } = req.query;
-
     const accessToken = req.header('X-Auth-Token')
     const headers = {
         headers: {
@@ -17,6 +15,7 @@ router.get('/', async (req, res) => {
         }
     };
 
+    const { next } = req.query;
     let url;
 
     if(next) {
@@ -38,7 +37,7 @@ router.get('/get/:uuid?', async (req, res) => {
     }
 
     const { uuid } = req.params;
-    const todo = await api.get(`/v1/todo/${uuid}`, headers);
+    const todo = await api.get(`/v1/todo/get/${uuid}`, headers);
     return res.json(todo.data)
 });
 
@@ -62,6 +61,7 @@ router.put('/:uuid?', async (req, res) => {
         }
     }
 
+    const { uuid } = req.params;
     const todo = await api.put(`/v1/todo/${uuid}`, req.body, headers);
     return res.json(todo.data)
 })
@@ -75,8 +75,8 @@ router.delete('/:uuid?', async (req, res) => {
    }
 
    const { uuid } = req.params;
-   const task = await api.delete(`/v1/task/${uuid}`, headers);
-   return res.json(task.data)
+   const todo = await api.delete(`/v1/todo/${uuid}`, headers);
+   return res.json(todo.data)
 })
 
 module.exports = router;

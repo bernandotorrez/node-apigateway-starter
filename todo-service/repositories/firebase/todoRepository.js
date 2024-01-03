@@ -21,9 +21,10 @@ class TodoRepository {
     const snapshot = await first.get();
 
     const last = snapshot.docs[snapshot.docs.length - 1];
-    const currentCreatedDate = last.data().created_date;
+    const currentCreatedDate = last ? last.data().created_date : '';
 
     const snapshotData = [];
+    let todosArray = '';
 
     if(next) {
       const nextTodos = db.collection(this._collection)
@@ -34,7 +35,7 @@ class TodoRepository {
 
       const nextData = await nextTodos.get();
       const last = nextData.docs[nextData.docs.length - 1];
-      const currentCreatedDate = last.data().created_date;
+      const currentCreatedDate = last ? last.data().created_date : '';
 
       nextData.forEach(doc => {
         const data = new todoModel(
@@ -49,13 +50,11 @@ class TodoRepository {
         snapshotData.push(data);
       });
 
-      const todosData = {
+      todosArray = {
         todos: snapshotData,
         loadMore: snapshotData.length >= this._limit ? true : false,
         next: currentCreatedDate
       }
-
-      return todosData;
     } else {
       snapshot.forEach(doc => {
         const data = new todoModel(
@@ -70,14 +69,14 @@ class TodoRepository {
         snapshotData.push(data);
       });
 
-      const todosData = {
+      todosArray = {
         todos: snapshotData,
         loadMore: snapshotData.length >= this._limit ? true : false,
         next: currentCreatedDate
       }
-
-      return todosData;
     } 
+
+    return todosArray;
   }
 
   async getTodos() {
@@ -96,7 +95,7 @@ class TodoRepository {
             doc.data().created_date,
             doc.data().updated_date
         );
-        todosArray.push(todo);
+      todosArray.push(todo);
     });
 
     return todosArray;

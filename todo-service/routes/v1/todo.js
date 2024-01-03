@@ -16,36 +16,15 @@ const cacheRepository = new CacheRepository();
 
 router.get('/', async (req, res) => {
     const { next } = req.query;
-    // try {
-    //     const todos = await cacheRepository.get(`todo:all`);
 
-    //     res.status(httpStatus.OK).json({
-    //         code: httpStatus.OK,
-    //         status: 'SUCCESS',
-    //         message: httpStatus[`${httpStatus.OK}_NAME`],
-    //         data: JSON.parse(todos)
-    //     });
-    // } catch (err) {
-    //     const todos = await todoRepository.getTodosCursor(next);
-
-    //     await cacheRepository.set(`todo:all`, JSON.stringify(todos), 60);
-
-    //     res.status(httpStatus.OK).json({
-    //         code: httpStatus.OK,
-    //         status: 'SUCCESS',
-    //         message: httpStatus[`${httpStatus.OK}_NAME`],
-    //         data: todos
-    //     });
-    // }
     const todos = await todoRepository.getTodosCursor(next);
-
-    // await cacheRepository.set(`todo:all`, JSON.stringify(todos), 60);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
         message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todos
+        data: todos,
+        cached: false
     });
 });
 
@@ -55,10 +34,6 @@ router.post('/', async (req, res) => {
     const createTodo = await todoRepository.createTodo({
         todo_name: req.body.todo_name,
     });
-
-    if(createTodo) {
-        await cacheRepository.delete('todo:all');
-    }
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -71,27 +46,14 @@ router.post('/', async (req, res) => {
 router.get('/get/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
-    try {
-        const todo = await cacheRepository.get(`todo:${uuid}`);
-  
-        res.status(httpStatus.OK).json({
-           code: httpStatus.OK,
-           status: 'SUCCESS',
-           message: httpStatus[`${httpStatus.OK}_NAME`],
-           data: JSON.parse(todo)
-        });
-    } catch (err) {
-        const todo = await todoRepository.getOneTodo(uuid);
+    const todo = await todoRepository.getOneTodo(uuid);
 
-        await cacheRepository.set(`todo:${uuid}`, JSON.stringify(todo), 60);
-
-        res.status(httpStatus.OK).json({
-            code: httpStatus.OK,
-            status: 'SUCCESS',
-            message: httpStatus[`${httpStatus.OK}_NAME`],
-            data: todo
-        });
-    }
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        status: 'SUCCESS',
+        message: httpStatus[`${httpStatus.OK}_NAME`],
+        data: todo
+    });
 });
 
 router.put('/:uuid?', async (req, res) => {
@@ -105,11 +67,6 @@ router.put('/:uuid?', async (req, res) => {
         todo_name
     });
 
-    if(updateTodo) {
-        await cacheRepository.delete('todo:all');
-        await cacheRepository.delete(`todo:${uuid}`);
-    }
-
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
@@ -122,11 +79,6 @@ router.delete('/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     const todo = await todoRepository.deleteTodo(uuid);
-
-    if(todo) {
-        await cacheRepository.delete('todo:all');
-        await cacheRepository.delete(`todo:${uuid}`);
-    }
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
