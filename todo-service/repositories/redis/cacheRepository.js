@@ -53,6 +53,18 @@ class CacheRepository {
       });
     });
   }
+
+  keys(keys) {
+    return new Promise((resolve, reject) => {
+      this._client.keys(keys, (error, count) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(count);
+      });
+    });
+  }
 }
 
 module.exports = CacheRepository;

@@ -2,6 +2,7 @@ const express = require('express');
 require('express-async-errors');
 const router = express.Router();
 const httpStatus = require('http-status');
+const deleteCache = require('../../utils/deleteCache');
 
 // Repositories
 const TodoRepository = require('../../repositories/firebase/todoRepository');
@@ -17,14 +18,27 @@ const cacheRepository = new CacheRepository();
 router.get('/', async (req, res) => {
     const { next } = req.query;
 
-    const todos = await todoRepository.getTodosCursor(next);
+    try {
+        const todos = await cacheRepository.get(`todo:${next}`)
 
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: todos
-    });
+        res.status(httpStatus.OK).json({
+            code: httpStatus.OK,
+            status: 'SUCCESS',
+            message: httpStatus[`${httpStatus.OK}_NAME`],
+            data: JSON.parse(todos)
+        });
+    } catch (error) {
+        const todos = await todoRepository.getTodosCursor(next);
+
+        await cacheRepository.set(`todo:${next}`, JSON.stringify(todos), 60);
+
+        res.status(httpStatus.OK).json({
+            code: httpStatus.OK,
+            status: 'SUCCESS',
+            message: httpStatus[`${httpStatus.OK}_NAME`],
+            data: todos
+        });
+    }
 });
 
 router.post('/', async (req, res) => {
@@ -33,6 +47,10 @@ router.post('/', async (req, res) => {
     const createTodo = await todoRepository.createTodo({
         todo_name: req.body.todo_name,
     });
+
+    if(createTodo) {
+        deleteCache('todo:*')
+    }
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -66,6 +84,10 @@ router.put('/:uuid?', async (req, res) => {
         todo_name
     });
 
+    if(updateTodo) {
+        deleteCache('todo:*')
+    }
+
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         status: 'SUCCESS',
@@ -78,6 +100,10 @@ router.delete('/:uuid?', async (req, res) => {
     const { uuid } = req.params;
 
     const todo = await todoRepository.deleteTodo(uuid);
+
+    if(todo) {
+        deleteCache('todo:*')
+    }
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
