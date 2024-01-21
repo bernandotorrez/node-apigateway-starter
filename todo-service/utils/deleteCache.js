@@ -1,5 +1,4 @@
-const CacheRepository = require('../repositories/redis/cacheRepository');
-const cacheRepository = new CacheRepository();
+const cacheRepository = require('../repositories/redis/cacheRepository');
 
 bulkDelete = async (prefix) => {
     const keys = await cacheRepository.keys(prefix);

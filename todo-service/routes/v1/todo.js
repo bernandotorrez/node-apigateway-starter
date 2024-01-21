@@ -5,15 +5,13 @@ const httpStatus = require('http-status');
 const deleteCache = require('../../utils/deleteCache');
 
 // Repositories
-const TodoRepository = require('../../repositories/firebase/todoRepository');
-const todoRepository = new TodoRepository();
+const todoRepository = require('../../repositories/firebase/todoRepository');
 
 // Validator
 const todoValidator = require('../../validators/todoValidator');
 
 // Cached
-const CacheRepository = require('../../repositories/redis/cacheRepository');
-const cacheRepository = new CacheRepository();
+const cacheRepository = require('../../repositories/redis/cacheRepository');
 
 router.get('/', async (req, res) => {
     const { next } = req.query;

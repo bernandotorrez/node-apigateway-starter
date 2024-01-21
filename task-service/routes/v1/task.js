@@ -4,11 +4,9 @@ const router = express.Router();
 const httpStatus = require('http-status');
 
 // Repositories
-const TaskRepository = require('../../repositories/mysql/taskRepository');
-const taskRepository = new TaskRepository();
+const taskRepository = require('../../repositories/mysql/taskRepository');
 
-const CacheRepository = require('../../repositories/redis/cacheRepository');
-const cacheRepository = new CacheRepository();
+const cacheRepository = require('../../repositories/redis/cacheRepository');
 
 // const rabbitMq = require('../../repositories/messageBroker/rabbitmqRepository');
 

@@ -55,4 +55,4 @@ class CacheRepository {
   }
 }
 
-module.exports = CacheRepository;
+module.exports = new CacheRepository();

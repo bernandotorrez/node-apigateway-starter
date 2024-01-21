@@ -88,4 +88,4 @@ class TaskRepository {
     }
 }
 
-module.exports = TaskRepository;
+module.exports = new TaskRepository();

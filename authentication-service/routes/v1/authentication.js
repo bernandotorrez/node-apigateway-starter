@@ -2,19 +2,15 @@ const express = require('express');
 require('express-async-errors');
 const router = express.Router();
 const httpStatus = require('http-status');
-const jwt = require('jsonwebtoken');
 const rateLimit = require('../../utils/rateLimiter');
 const tokenManager = require('../../utils/tokenManager');
 
 // Repositories
-const UserRepository = require('../../repositories/mysql/userRepository');
-const userRepository = new UserRepository();
+const userRepository = require('../../repositories/mysql/userRepository');
 
-const RefreshTokenRepository = require('../../repositories/mysql/refreshTokenRepository');
-const refreshTokenRepository = new RefreshTokenRepository();
+const refreshTokenRepository = require('../../repositories/mysql/refreshTokenRepository');
 
-const CacheRepository = require('../../repositories/redis/cacheRepository');
-const cacheRepository = new CacheRepository();
+// const cacheRepository = require('../../repositories/redis/cacheRepository');
 
 // Validator
 const authenticationValidator = require('../../validators/authenticationValidator');

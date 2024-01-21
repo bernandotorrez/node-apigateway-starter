@@ -56,4 +56,4 @@ class RefreshTokenRepository {
     }
 }
 
-module.exports = RefreshTokenRepository;
+module.exports = new RefreshTokenRepository();
