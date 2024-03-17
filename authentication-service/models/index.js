@@ -1,3 +1,4 @@
+/* eslint-disable n/no-path-concat */
 'use strict';
 
 const fs = require('fs');

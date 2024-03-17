@@ -1,8 +1,8 @@
 // const fs = require('fs');
 const dotenv = require('dotenv');
-dotenv.config()
+dotenv.config();
 
-const { DB_USER, DB_PASS, DB_HOST, DB_NAME, DB_PORT, DB_DRIVER } = process.env
+const { DB_USER, DB_PASS, DB_HOST, DB_NAME, DB_PORT, DB_DRIVER } = process.env;
 
 module.exports = {
   development: {
@@ -35,7 +35,7 @@ module.exports = {
     port: DB_PORT,
     dialect: DB_DRIVER,
     dialectOptions: {
-      bigNumberStrings: true,
+      bigNumberStrings: true
     //   ssl: {
     //     ca: fs.readFileSync(__dirname + '/mysql-ca-master.crt')
     //   }

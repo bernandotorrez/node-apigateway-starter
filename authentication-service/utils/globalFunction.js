@@ -1,113 +1,126 @@
-var moment = require('moment');
+const moment = require('moment');
 
-time = () => {
-    var date = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    var day = date.getDate(),
-        month = monthNames[date.getMonth()],
-        year = date.getFullYear(),
-        hour = date.getHours(),
-        minute = date.getMinutes(),
-        second = date.getSeconds();
+const time = () => {
+  const date = new Date();
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
 
-    var login_time = `${day} ${month} ${year} ${hour}:${minute}:${second}`
+  const loginTime = `${day} ${month} ${year} ${hour}:${minute}:${second}`;
 
-    return login_time
-}
+  return loginTime;
+};
 
-time_date = () => {
-    var date = new Date();
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
+const timeDate = () => {
+  const currentDate = new Date();
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
 
-    var day = date.getDate(),
-        month = monthNames[date.getMonth()],
-        year = date.getFullYear()
+  const day = currentDate.getDate();
+  const month = monthNames[currentDate.getMonth()];
+  const year = currentDate.getFullYear();
 
-    var date = `${day}-${month}-${year}`
+  const timeDate = `${day}-${month}-${year}`;
 
-    return date
-}
+  return timeDate;
+};
 
-check_null = (value) => {
-    if (!value || value == '' || value == null) {
-        return '-';
-    } else {
-        return value;
-    }
-}
+const checkNull = (value) => {
+  if (!value || value === '' || value == null) {
+    return '-';
+  } else {
+    return value;
+  }
+};
 
-check_null_start = (value) => {
-    if (!value || value == '' || value == null || value == 0) {
-        return '-';
-    } else {
-        return value;
-    }
-}
+const checkNullStart = (value) => {
+  if (!value || value === '' || value == null || value === 0) {
+    return '-';
+  } else {
+    return value;
+  }
+};
 
-time_his = () => {
-    var date = new Date();
+const timeHis = () => {
+  const date = new Date();
 
-    var day = date.getDate(),
-        month = date.getMonth() + 1,
-        year = date.getFullYear(),
-        hour = date.getHours(),
-        minute = date.getMinutes(),
-        second = date.getSeconds();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
 
-    var time_his = `${year}-${month}-${day} ${hour}:${minute}:${second}`
+  const timeHis = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 
-    return time_his
-}
+  return timeHis;
+};
 
-log_time = () => {
-    var date = new Date();
+const logTime = () => {
+  const date = new Date();
 
-    var day = date.getDate(),
-        month = date.getMonth() + 1,
-        year = date.getFullYear(),
-        hour = date.getHours(),
-        minute = date.getMinutes(),
-        second = date.getSeconds();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
 
-    var log_time = `${day}-${month}-${year} ${hour}:${minute}:${second}`
+  const logTime = `${day}-${month}-${year} ${hour}:${minute}:${second}`;
 
-    return log_time
-}
+  return logTime;
+};
 
+const capitalEachWord = (letter) => {
+  const callback = letter.toLowerCase()
+    .split(' ')
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
 
-capital_each_word = (letter) => {
-    let callback = letter.toLowerCase()
-        .split(' ')
-        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-        .join(' ');
+  return callback;
+};
 
-    return callback
-}
+const checkDate = (value) => {
+  let newDate;
+  if (moment(value, 'DD-MM-YYYY', true).isValid() || moment(value, 'D-MM-YYYY', true).isValid()) {
+    newDate = value.split('-').reverse().join('-');
+  } else if (moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'D/MM/YYYY', true).isValid()) {
+    newDate = value.split('/').reverse().join('-');
+  } else {
+    newDate = value;
+  }
 
-check_date = (value) => {
+  return newDate;
+};
 
-    if (moment(value, 'DD-MM-YYYY', true).isValid() || moment(value, 'D-MM-YYYY', true).isValid()) {
-        var newdate = value.split("-").reverse().join("-");
-    } else if (moment(value, 'DD/MM/YYYY', true).isValid() || moment(value, 'D/MM/YYYY', true).isValid()) {
-        var newdate = value.split("/").reverse().join("-");
-    } else {
-        var newdate = value;
-    }
+const convertMessage = (messages) => {
+  const data = [];
 
-    return newdate;
-}
+  messages.forEach((row) => {
+    data.push({
+      message: row.message,
+      field: row.path[0]
+    });
+  });
+
+  return data;
+};
 
 module.exports = {
-    time: time,
-    time_his: time_his,
-    capital_each_word: capital_each_word,
-    log_time: log_time,
-    check_null: check_null,
-    check_null_start: check_null_start,
-    check_date: check_date,
-    time_date: time_date
-}
+  time,
+  timeHis,
+  capitalEachWord,
+  logTime,
+  checkNull,
+  checkNullStart,
+  checkDate,
+  timeDate,
+  convertMessage
+};

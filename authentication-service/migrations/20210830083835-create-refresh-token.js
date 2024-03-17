@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       token: {
-        type: Sequelize.TEXT,
+        type: Sequelize.TEXT
       },
       created_at: {
         allowNull: false,

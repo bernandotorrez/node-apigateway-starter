@@ -6,7 +6,7 @@ const RabbitMQ = {
     const channel = await connection.createChannel();
 
     await channel.assertQueue(queue, {
-      durable: true,
+      durable: true
     });
 
     await channel.sendToQueue(queue, Buffer.from(message));
@@ -14,7 +14,7 @@ const RabbitMQ = {
     setTimeout(() => {
       connection.close();
     }, 1000);
-  },
+  }
 };
 
 module.exports = RabbitMQ;

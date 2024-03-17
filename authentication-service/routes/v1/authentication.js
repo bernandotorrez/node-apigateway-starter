@@ -10,110 +10,102 @@ const userRepository = require('../../repositories/mysql/userRepository');
 
 const refreshTokenRepository = require('../../repositories/mysql/refreshTokenRepository');
 
-// const cacheRepository = require('../../repositories/redis/cacheRepository');
-
 // Validator
 const authenticationValidator = require('../../validators/authenticationValidator');
 
 router.post('/register', async (req, res) => {
-    authenticationValidator.RegisterValidator(req.body);
+  authenticationValidator.RegisterValidator(req.body);
 
-    const {
-        username,
-        password
-    } = req.body;
+  const { username, password } = req.body;
 
-    const user = await userRepository.register({
-        username,
-        password
-    });
+  const user = await userRepository.register({ username, password });
 
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: {
-            user: user.username,
-            level: user.level,
-            created_at: user.created_at
-        }
-    });
-})
+  const data = {
+    username: user.username,
+    level: user.level
+  };
+
+  const accessToken = tokenManager.generateAccessToken(data);
+  const refreshToken = tokenManager.generateRefreshToken(data);
+
+  await refreshTokenRepository.addRefreshToken({ token: refreshToken });
+
+  res.header('X-Auth-Token', accessToken);
+  res.header('X-Auth-Refresh-Token', refreshToken);
+  res.status(httpStatus.CREATED).json({
+    code: httpStatus.CREATED,
+    success: true,
+    message: 'Successfully Registered',
+    data: {
+      user: user.username,
+      level: user.level,
+      created_at: user.created_at
+    }
+  });
+});
 
 router.post('/login', rateLimit, async (req, res) => {
-    authenticationValidator.LoginValidator(req.body);
+  authenticationValidator.LoginValidator(req.body);
 
-    const {
-        username,
-        password
-    } = req.body;
+  const { username, password } = req.body;
 
-    const user = await userRepository.login({
-        username,
-        password
-    });
+  const user = await userRepository.login({ username, password });
 
-    const data = {
-        username: user.username,
-        level: user.level,
-    };
+  const data = {
+    username: user.username,
+    level: user.level
+  };
 
-    const payload = {
-        data
-    }
+  const accessToken = tokenManager.generateAccessToken(data);
+  const refreshToken = tokenManager.generateRefreshToken(data);
 
-    const accessToken = tokenManager.generateAccessToken(payload);
-    const refreshToken = tokenManager.generateRefreshToken(payload);
+  await refreshTokenRepository.addRefreshToken({ token: refreshToken });
 
-    await refreshTokenRepository.addRefreshToken({ token: refreshToken });
-
-    res.header('X-Auth-Token', accessToken);
-    res.header('X-Auth-Refresh-Token', refreshToken);
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: data.username
-    });
-})
+  res.header('X-Auth-Token', accessToken);
+  res.header('X-Auth-Refresh-Token', refreshToken);
+  res.status(httpStatus.OK).json({
+    code: httpStatus.OK,
+    success: true,
+    message: 'Successfully Logged In',
+    data: data.username
+  });
+});
 
 router.put('/refresh-token', async (req, res) => {
-    const refreshToken = req.header('X-Auth-Refresh-Token');
-    await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
-    const decoded = tokenManager.verifyRefreshToken(refreshToken);
-    
-    const data = {
-        username: decoded.data.username,
-        level: decoded.data.level,
-    };
+  const refreshToken = req.header('X-Auth-Refresh-Token');
+  await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
+  const decoded = tokenManager.verifyRefreshToken(refreshToken);
 
-    const payload = {
-        data
-    }
+  const data = {
+    username: decoded.username,
+    level: decoded.level
+  };
 
-    const accessToken = tokenManager.generateAccessToken(payload);
-    res.header('X-Auth-Token', accessToken);
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: data.username
-    });
-})
+  const accessToken = tokenManager.generateAccessToken(data);
+
+  res.header('X-Auth-Token', accessToken);
+  res.header('X-Auth-Refresh-Token', refreshToken);
+  res.status(httpStatus.OK).json({
+    code: httpStatus.OK,
+    success: true,
+    message: 'Successfully Refresh Token',
+    data: data.username
+  });
+});
 
 router.delete('/logout', async (req, res) => {
-    const refreshToken = req.header('X-Auth-Refresh-Token');
-    await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
-    await refreshTokenRepository.deleteRefreshToken({ token: refreshToken });
+  const refreshToken = req.header('X-Auth-Refresh-Token');
+  await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.deleteRefreshToken({ token: refreshToken });
 
-    res.header('X-Auth-Token', '');
-    res.header('X-Auth-Refresh-Token', '');
-    res.status(httpStatus.OK).json({
-        code: httpStatus.OK,
-        status: 'SUCCESS',
-        message: httpStatus[`${httpStatus.OK}_NAME`],
-        data: 'logged out'
-    });
-})
+  res.header('X-Auth-Token', '');
+  res.header('X-Auth-Refresh-Token', '');
+  res.status(httpStatus.OK).json({
+    code: httpStatus.OK,
+    success: true,
+    message: 'Successfully Logged Out',
+    data: null
+  });
+});
 
 module.exports = router;
