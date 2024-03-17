@@ -4,12 +4,12 @@ const express = require('express');
 const logger = require('morgan');
 const helmet = require('helmet');
 const winston = require('winston');
-const globalFunction = require('./utils/globalFunction');
 const bearerToken = require('express-bearer-token');
 const appRoot = require('app-root-path');
 const cors = require('cors');
 const compression = require('compression');
 const httpStatus = require('http-status');
+const globalFunction = require('./utils/globalFunction');
 
 // const jwt = require('jsonwebtoken');
 
