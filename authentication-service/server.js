@@ -29,7 +29,7 @@ app.use(express.urlencoded({
 }));
 app.use(bearerToken());
 app.use(cors());
-//app.use([proxyMiddleware]);
+app.use([proxyMiddleware]);
 
 // wajib saat naik ke production
 if (process.env.NODE_ENV === 'production') {
