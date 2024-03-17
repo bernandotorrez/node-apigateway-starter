@@ -125,7 +125,6 @@ app.use(function (err, req, res, next) {
   const logFile = winston.createLogger({
 
     transports: [
-
       new winston.transports.File({
         filename: logLocation,
         level: 'error',
@@ -133,6 +132,16 @@ app.use(function (err, req, res, next) {
         prettyPrint: true
       })
     ]
+  });
+
+  logFile.log({
+    level: 'error',
+    message: `${err}`,
+    httpStatus: `${err.statusCode || httpStatus.INTERNAL_SERVER_ERROR}`,
+    ip: `${req.ip}`,
+    url: `${req.originalUrl}`,
+    method: `${req.method}`,
+    timestamp: globalFunction.logTime()
   });
 
   // handle bad request
@@ -144,16 +153,6 @@ app.use(function (err, req, res, next) {
       data: JSON.parse(err.message)
     });
   } else {
-    logFile.log({
-      level: 'error',
-      message: `${err}`,
-      httpStatus: `${err.statusCode || httpStatus.INTERNAL_SERVER_ERROR}`,
-      ip: `${req.ip}`,
-      url: `${req.originalUrl}`,
-      method: `${req.method}`,
-      timestamp: globalFunction.logTime()
-    });
-
     res.status(err.statusCode || httpStatus.INTERNAL_SERVER_ERROR).json({
       code: err.statusCode || httpStatus.INTERNAL_SERVER_ERROR,
       success: false,
