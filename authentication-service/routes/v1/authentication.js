@@ -73,7 +73,7 @@ router.post('/login', rateLimit, async (req, res) => {
 
 router.put('/refresh-token', async (req, res) => {
   const refreshToken = req.header('X-Auth-Refresh-Token');
-  await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.getRefreshToken({ token: refreshToken });
   const decoded = tokenManager.verifyRefreshToken(refreshToken);
 
   const data = {
@@ -95,7 +95,7 @@ router.put('/refresh-token', async (req, res) => {
 
 router.delete('/logout', async (req, res) => {
   const refreshToken = req.header('X-Auth-Refresh-Token');
-  await refreshTokenRepository.verifyRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.getRefreshToken({ token: refreshToken });
   await refreshTokenRepository.deleteRefreshToken({ token: refreshToken });
 
   res.header('X-Auth-Token', '');

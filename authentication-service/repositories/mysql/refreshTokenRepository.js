@@ -19,7 +19,7 @@ class RefreshTokenRepository {
     }
   }
 
-  async verifyRefreshToken ({ token }) {
+  async getRefreshToken ({ token }) {
     if (token === '' || token === undefined) {
       throw new AuthenticationError('Refresh Token not Provided');
     }
@@ -38,7 +38,7 @@ class RefreshTokenRepository {
   }
 
   async deleteRefreshToken ({ token }) {
-    await this.verifyRefreshToken({ token });
+    await this.getRefreshToken({ token });
 
     try {
       const deleteToken = await this._model.destroy({
