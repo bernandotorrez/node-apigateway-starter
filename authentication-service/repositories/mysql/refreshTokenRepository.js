@@ -1,7 +1,6 @@
 const { RefreshToken } = require('../../models');
 const InvariantError = require('../../exceptions/InvariantError');
 const AuthenticationError = require('../../exceptions/AuthenticationError');
-const BadRequestError = require('../../exceptions/BadRequestError');
 
 class RefreshTokenRepository {
   constructor () {
@@ -22,7 +21,7 @@ class RefreshTokenRepository {
 
   async verifyRefreshToken ({ token }) {
     if (token === '' || token === undefined) {
-      throw new BadRequestError('Refresh Token not Provided');
+      throw new AuthenticationError('Refresh Token not Provided');
     }
 
     const refreshToken = await this._model.findOne({
