@@ -14,7 +14,7 @@ const refreshTokenRepository = require('../../repositories/mysql/refreshTokenRep
 const authenticationValidator = require('../../validators/authenticationValidator');
 
 router.post('/register', async (req, res) => {
-  authenticationValidator.RegisterValidator(req.body);
+  authenticationValidator.AuthValidator(req.body);
 
   const { username, password } = req.body;
 
@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', rateLimit, async (req, res) => {
-  authenticationValidator.LoginValidator(req.body);
+  authenticationValidator.AuthValidator(req.body);
 
   const { username, password } = req.body;
 
