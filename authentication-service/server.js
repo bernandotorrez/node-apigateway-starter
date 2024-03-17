@@ -36,6 +36,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet());
 }
 
+// Check env JWT_PRIVATE_KEY
 if (!process.env.JWT_PRIVATE_KEY) {
   console.error('FATAL ERROR : jwtPrivateKey not set');
   process.exit(1);
