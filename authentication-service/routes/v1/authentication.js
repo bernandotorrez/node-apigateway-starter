@@ -25,8 +25,8 @@ router.post('/register', async (req, res) => {
     level: user.level
   };
 
-  const accessToken = tokenManager.generateAccessToken(data);
-  const refreshToken = tokenManager.generateRefreshToken(data);
+  const accessToken = tokenManager.generateAccessToken(user.uuid, data);
+  const refreshToken = tokenManager.generateRefreshToken(user.uuid, data);
 
   await refreshTokenRepository.addRefreshToken({ token: refreshToken });
 
@@ -56,8 +56,8 @@ router.post('/login', rateLimit, async (req, res) => {
     level: user.level
   };
 
-  const accessToken = tokenManager.generateAccessToken(data);
-  const refreshToken = tokenManager.generateRefreshToken(data);
+  const accessToken = tokenManager.generateAccessToken(user.uuid, data);
+  const refreshToken = tokenManager.generateRefreshToken(user.uuid, data);
 
   await refreshTokenRepository.addRefreshToken({ token: refreshToken });
 
@@ -76,12 +76,14 @@ router.put('/refresh-token', async (req, res) => {
   await refreshTokenRepository.getRefreshToken({ token: refreshToken });
   const decoded = tokenManager.verifyRefreshToken(refreshToken);
 
-  const data = {
-    username: decoded.username,
-    level: decoded.level
+  const { data, sub } = decoded;
+
+  const payload = {
+    username: data.username,
+    level: data.level
   };
 
-  const accessToken = tokenManager.generateAccessToken(data);
+  const accessToken = tokenManager.generateAccessToken(sub, payload);
 
   res.header('X-Auth-Token', accessToken);
   res.header('X-Auth-Refresh-Token', refreshToken);

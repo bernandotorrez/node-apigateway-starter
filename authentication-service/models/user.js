@@ -14,10 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    username: {
+    uuid: {
       type: DataTypes.STRING,
       primaryKey: true
     },
+    username: DataTypes.STRING,
     password: DataTypes.STRING,
     level: DataTypes.ENUM('Admin', 'User')
   }, {

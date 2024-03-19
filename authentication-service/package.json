@@ -46,6 +46,7 @@
     "rate-limit-redis": "^2.1.0",
     "redis": "^3.1.2",
     "sequelize": "^6.6.5",
+    "uuid": "^9.0.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {

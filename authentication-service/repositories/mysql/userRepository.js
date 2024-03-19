@@ -2,6 +2,7 @@ const {
   User
 } = require('../../models');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const ConflictError = require('../../exceptions/ConflictError');
@@ -47,6 +48,7 @@ class UserRepository {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
       const user = await this._model.create({
+        uuid: uuidv4(),
         username,
         password: hashedPassword,
         level

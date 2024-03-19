@@ -8,12 +8,8 @@ class RefreshTokenRepository {
   }
 
   async addRefreshToken ({ token }) {
-    const data = {
-      token
-    };
-
     try {
-      return await this._model.create(data);
+      return await this._model.create({ token });
     } catch (error) {
       throw new InvariantError('Add Refresh Token Failed');
     }
