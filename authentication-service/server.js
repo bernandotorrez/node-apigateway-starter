@@ -10,6 +10,7 @@ const cors = require('cors');
 const compression = require('compression');
 const httpStatus = require('http-status');
 const globalFunction = require('./utils/globalFunction');
+const rateLimit = require('./utils/rateLimiter');
 
 // const jwt = require('jsonwebtoken');
 
@@ -43,7 +44,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 }
 
 // setiap ada penambahan Router, inisialisasi index nya disini
-app.use('/v1/auth', authRouterV1);
+app.use('/v1/auth', rateLimit, authRouterV1);
 
 // error handler
 process.on('uncaughtException', (ex) => {

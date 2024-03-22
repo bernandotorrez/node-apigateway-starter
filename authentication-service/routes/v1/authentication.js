@@ -2,7 +2,6 @@ const express = require('express');
 require('express-async-errors');
 const router = express.Router();
 const httpStatus = require('http-status');
-const rateLimit = require('../../utils/rateLimiter');
 const tokenManager = require('../../utils/tokenManager');
 
 // Repositories
@@ -44,7 +43,7 @@ router.post('/register', async (req, res) => {
   });
 });
 
-router.post('/login', rateLimit, async (req, res) => {
+router.post('/login', async (req, res) => {
   authenticationValidator.AuthValidator(req.body);
 
   const { username, password } = req.body;
