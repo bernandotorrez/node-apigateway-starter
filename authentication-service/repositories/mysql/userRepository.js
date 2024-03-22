@@ -42,7 +42,7 @@ class UserRepository {
   }) {
     const user = await this._model.findOne({ where: { username } });
     if (user) {
-      throw new ConflictError('Username already Exist');
+      throw new ConflictError('Username Already Exist');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
