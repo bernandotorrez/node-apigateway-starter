@@ -7,7 +7,7 @@ class RefreshTokenRepository {
     this._model = RefreshToken;
   }
 
-  async addRefreshToken ({ token }) {
+  async addRefreshToken (token) {
     try {
       return await this._model.create({ token });
     } catch (error) {
@@ -15,7 +15,7 @@ class RefreshTokenRepository {
     }
   }
 
-  async getRefreshToken ({ token }) {
+  async getRefreshToken (token) {
     if (token === '' || token === undefined) {
       throw new AuthenticationError('Refresh Token not Provided');
     }
@@ -33,8 +33,8 @@ class RefreshTokenRepository {
     return refreshToken;
   }
 
-  async deleteRefreshToken ({ token }) {
-    await this.getRefreshToken({ token });
+  async deleteRefreshToken (token) {
+    await this.getRefreshToken(token);
 
     try {
       const deleteToken = await this._model.destroy({

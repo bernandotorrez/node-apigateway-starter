@@ -17,7 +17,7 @@ router.post('/register', async (req, res) => {
 
   const { username, password } = req.body;
 
-  const user = await userRepository.register({ username, password });
+  const user = await userRepository.register(username, password);
 
   const data = {
     username: user.username,
@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
   const accessToken = tokenManager.generateAccessToken(user.uuid, data);
   const refreshToken = tokenManager.generateRefreshToken(user.uuid, data);
 
-  await refreshTokenRepository.addRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.addRefreshToken(refreshToken);
 
   res.header('X-Auth-Token', accessToken);
   res.header('X-Auth-Refresh-Token', refreshToken);
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
 
   const { username, password } = req.body;
 
-  const user = await userRepository.login({ username, password });
+  const user = await userRepository.login(username, password);
 
   const data = {
     username: user.username,
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
   const accessToken = tokenManager.generateAccessToken(user.uuid, data);
   const refreshToken = tokenManager.generateRefreshToken(user.uuid, data);
 
-  await refreshTokenRepository.addRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.addRefreshToken(refreshToken);
 
   res.header('X-Auth-Token', accessToken);
   res.header('X-Auth-Refresh-Token', refreshToken);
@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 
 router.put('/refresh-token', async (req, res) => {
   const refreshToken = req.header('X-Auth-Refresh-Token');
-  await refreshTokenRepository.getRefreshToken({ token: refreshToken });
+  await refreshTokenRepository.getRefreshToken(refreshToken);
   const decoded = tokenManager.verifyRefreshToken(refreshToken);
 
   const { data, sub } = decoded;
@@ -96,8 +96,9 @@ router.put('/refresh-token', async (req, res) => {
 
 router.delete('/logout', async (req, res) => {
   const refreshToken = req.header('X-Auth-Refresh-Token');
-  await refreshTokenRepository.getRefreshToken({ token: refreshToken });
-  await refreshTokenRepository.deleteRefreshToken({ token: refreshToken });
+
+  await refreshTokenRepository.getRefreshToken(refreshToken);
+  await refreshTokenRepository.deleteRefreshToken(refreshToken);
 
   res.header('X-Auth-Token', '');
   res.header('X-Auth-Refresh-Token', '');

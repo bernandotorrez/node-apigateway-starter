@@ -12,10 +12,7 @@ class UserRepository {
     this._model = User;
   }
 
-  async login ({
-    username,
-    password
-  }) {
+  async login (username, password) {
     const user = await this._model.findOne({
       where: {
         username
@@ -35,11 +32,7 @@ class UserRepository {
     return user;
   }
 
-  async register ({
-    username,
-    password,
-    level = 'User'
-  }) {
+  async register (username, password, level = 'User') {
     const user = await this._model.findOne({ where: { username } });
     if (user) {
       throw new ConflictError('Username Already Exist');
@@ -60,9 +53,7 @@ class UserRepository {
     }
   }
 
-  async getUserByUsername ({
-    username
-  }) {
+  async getUserByUsername (username) {
     return this._model.findOne({
       where: {
         username
